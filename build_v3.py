@@ -24,7 +24,7 @@ SITE = {
 #   False = 只锁「成员专区」area.html，官网其余页面公开
 #   改完重跑本脚本即可（登录页永远不锁，否则会死循环）
 # ============================================================
-SITE_GATE = True
+SITE_GATE = False
 
 # ============================================================
 # 数据区（占位内容已标注，替换时只改这里后重新运行本脚本）
@@ -572,52 +572,58 @@ def build_index():
 
     p.append(f"""
 <header class="hero" id="top">
-  <canvas id="net"></canvas>
-  <span class="hero-mark">象罔</span>
   <div class="wrap hero-grid">
-    <div>
+    <div class="hero-left">
       <span class="pill"><i class="dot-live"></i> 2026 秋季招新 · 进行中</span>
       <h1>{split_chars('知索不得，|象罔得之。')}</h1>
-      <p class="typer" data-typer="Agent 工程|应用智能体|科研 Harness|检索增强|上下文工程">
-        &gt; 我们现在在做：<b class="tw"></b><i class="caret"></i>
-      </p>
-      <p class="hero-sub">探索无法被现有模型定义的智能。</p>
+      <p class="hero-sub">在象罔，从第一个页面、接口或模型开始，把想法做成能真正运行的项目。</p>
       <div class="btn-row">
-        <a class="btn btn-p" href="#life">看看我们最近在干嘛 →</a>
-        <a class="btn btn-g" href="projects.html">浏览全部作品</a>
+        <a class="btn btn-p" href="#recruit">我想加入 →</a>
+        <a class="btn btn-g" href="projects.html">看看我们做过什么</a>
       </div>
       <div class="hero-stats rv">{stats}</div>
     </div>
-    <div class="hero-side">
-      <div class="term">
-        <div class="term-bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span>xiangwang ~ club-status</span></div>
-        <div class="term-body">{tl}</div>
-      </div>
-      <span class="chip-float cf1">⌘ 每周五 19:00 组会</span>
-      <span class="chip-float cf2">⚡ 6 个在研项目</span>
-      <span class="chip-float cf3">☕ A-302 长期驻扎</span>
-      <div class="badge-spin">
-        <svg viewBox="0 0 200 200" aria-hidden="true"><defs><path id="bcircle" d="M100,100 m-76,0 a76,76 0 1,1 152,0 a76,76 0 1,1 -152,0"/></defs>
-          <text><textPath href="#bcircle" startOffset="0">XIANGWANG · 象罔社团 · JOIN US · 写代码 · 做东西 · </textPath></text></svg>
-        <span class="core">象</span>
+    <div class="hero-side" aria-label="交互终端">
+      <div class="cliterm" data-term>
+        <div class="clit-top">
+          <span class="clit-dots"><i></i><i></i><i></i></span>
+          <span class="clit-title">xiangwang@club ~/site</span>
+        </div>
+        <div class="clit-body" data-term-out></div>
+        <div class="clit-in">
+          <span class="clit-prompt">$</span>
+          <input data-term-in autocomplete="off" spellcheck="false" autocapitalize="off"
+                 placeholder="输入 help 然后回车 ↵"/>
+        </div>
       </div>
     </div>
   </div>
 </header>
-
-<div class="mq-wrap">
-  <div class="mq">
-    {''.join(f'<span class="mq-item"><i></i>{esc(t)}</span>' for t in TECH)}
-    {''.join(f'<span class="mq-item"><i></i>{esc(t)}</span>' for t in TECH)}
-  </div>
-  <div class="mq rev">
-    {''.join(f'<span class="mq-item b">{esc(t)}</span>' for t in life_phrases)}
-    {''.join(f'<span class="mq-item b">{esc(t)}</span>' for t in life_phrases)}
-  </div>
-</div>
 """)
 
-    # 关于 + Bento
+    # 作品（先展示真实交付，作为技术能力的证据）
+    cards = "".join(f"""
+      <a class="beam tilt rv" href="{work_url(x['id'])}" data-cat="{esc(x['cat'])}"><div class="beam-in wk spot">
+        <div class="cover {x['cv']}"><span class="st">{esc(x['status'])}</span><span class="em">{x['em']}</span></div>
+        <div class="body">
+          <span class="cat">{esc(x['cat'])}</span>
+          <h3>{esc(x['title'])}</h3>
+          <p>{esc(x['desc'][:58])}…</p>
+          <div class="stack">{''.join(f'<span>{esc(s)}</span>' for s in x['stack'][:4])}</div>
+          <span class="more">查看项目详情 <span>→</span></span>
+        </div>
+      </div></a>""" for x in WORKS)
+    p.append(f"""
+<section id="works">
+  <div class="wrap">
+    {sec_head("PORTFOLIO · 作品背后是人", "先看我们真正做过什么", "不讲技术栈罗列，讲谁做的、踩了什么坑、现在什么状态。每一个项目都有独立详情页。", "01")}
+    <div class="work-grid">{cards}</div>
+    <div style="text-align:center;margin-top:34px"><a class="btn btn-g" href="projects.html">查看全部作品 →</a></div>
+  </div>
+</section>
+""")
+
+    # 方向（Bento）
     bento_parts = []
     for b in BENTO:
         bento_parts.append('<div class="bt %s rv"><span class="ic">%s</span><h3>%s</h3><p>%s</p><span class="no">%s</span></div>'
@@ -627,10 +633,9 @@ def build_index():
 <section id="about">
   <div class="wrap">
     <div class="sec-head rv">
-      <span class="sec-num">01</span>
-      {kicker("ABOUT · 我们是谁")}
-      <h2>不搞"坐而论道"，<span class="grad">我们直接做东西</span></h2>      <p>象罔，出自《庄子·天地》：黄帝丢了玄珠，让"知"去找、让"离朱"去找都找不到，最后无心而求的"象罔"找到了。
-      我们借这个名字提醒自己——最好的东西往往不是刷题刷出来的，是在动手折腾的过程中撞见的。</p>
+      <span class="sec-num">02</span>
+      {kicker("WHAT WE DO · 我们是谁")}
+      <h2>我们的方向</h2><p>象罔，出自《庄子·天地》，借这个名字提醒自己——最好的东西往往不是刷题刷出来的，是在动手折腾的过程中撞见的。</p>
     </div>
     <div class="bento">{bento}</div>
     <p class="rv" style="margin-top:26px;font-family:var(--mono);font-size:14.5px;color:var(--dim-2)">
@@ -639,22 +644,20 @@ def build_index():
 </section>
 """)
 
-    # 动态
-    items = "".join(f"""
-      <div class="tl-item rv">
-        <a class="tl-card spot" href="{life_url(a['id'])}">
-          <span class="d">{esc(a['date'])} · {esc(a['weekday'])}</span>
-          <h3>{esc(a['title'])}</h3>
-          <p>{esc(a['summary'])}</p>
-          <span class="go">查看详情 <span>→</span></span>
-        </a>
-      </div>""" for a in ACTIVITIES[:4])
+    # 成长路径
+    growth_steps = [
+        ("第 1 周", "跑通一脚，熟悉仓库、工具和协作方式。"),
+        ("第 2–4 周", "领一个边界清楚的小任务，改第一行真实代码并提交。"),
+        ("第 1 个月", "参与一次评审或上线，看见自己的代码被别人用到。"),
+        ("第 1 个学期", "参与一个完整项目；之后可负责模块、带新人或参赛。"),
+    ]
+    gsteps = "".join(f'<li><p class="t">{esc(t)}</p><p class="d">{esc(d)}</p></li>' for t, d in growth_steps)
     p.append(f"""
-<section id="life" style="padding-top:40px">
+<section id="growth">
   <div class="wrap">
-    {sec_head("CLUB LIFE · 最近在干嘛", "社团不是一排链接，是每周都在发生的事", "每条动态都有独立详情页：现场照片、完整复盘、到场的人。", "02")}
-    <div class="tl">{items}</div>
-    <div style="text-align:center;margin-top:34px"><a class="btn btn-g" href="life.html">查看全部动态 →</a></div>
+    {sec_head("GROWTH PATH · 加入之后", "你会怎样一步步做出东西", "我们不看你现在会多少，看你想不想做点东西。加入后有明确的成长路线，而不是自生自灭。", "03")}
+    <ol class="steps rv">{gsteps}</ol>
+    <div style="text-align:center;margin-top:12px"><a class="btn btn-p" href="#recruit">我准备好了，看看怎么加入 →</a></div>
   </div>
 </section>
 """)
@@ -676,32 +679,10 @@ def build_index():
     p.append(f"""
 <section id="members" style="padding-top:20px">
   <div class="wrap">
-    {sec_head("MEMBERS · 先听听他们说", "18 位成员，18 种来这儿的理由", "隐私说明：本页仅展示姓名·学院·专业·职位，其他个人信息一律不上网。", "03")}
+    {sec_head("MEMBERS · 先听听他们说", "成员，18 种来这儿的理由", "隐私说明：本页仅展示姓名·学院·专业·职位，其他个人信息一律不上网。", "04")}
     <div class="quote-grid">{quotes}</div>
     <div class="mem-grid" style="margin-bottom:34px">{roster}</div>
-    <div style="text-align:center"><a class="btn btn-g" href="members.html">查看全部 18 位成员 →</a></div>
-  </div>
-</section>
-""")
-
-    # 作品
-    cards = "".join(f"""
-      <a class="beam tilt rv" href="{work_url(x['id'])}" data-cat="{esc(x['cat'])}"><div class="beam-in wk spot">
-        <div class="cover {x['cv']}"><span class="st">{esc(x['status'])}</span><span class="em">{x['em']}</span></div>
-        <div class="body">
-          <span class="cat">{esc(x['cat'])}</span>
-          <h3>{esc(x['title'])}</h3>
-          <p>{esc(x['desc'][:58])}…</p>
-          <div class="stack">{''.join(f'<span>{esc(s)}</span>' for s in x['stack'][:4])}</div>
-          <span class="more">查看项目详情 <span>→</span></span>
-        </div>
-      </div></a>""" for x in WORKS)
-    p.append(f"""
-<section id="works" style="padding-top:20px">
-  <div class="wrap">
-    {sec_head("PORTFOLIO · 作品背后是人", "每个项目都有独立的详情页", "不讲技术栈罗列，讲谁做的、踩了什么坑、现在什么状态。", "04")}
-    <div class="work-grid">{cards}</div>
-    <div style="text-align:center;margin-top:34px"><a class="btn btn-g" href="projects.html">查看全部作品 →</a></div>
+    <div style="text-align:center"><a class="btn btn-g" href="members.html">查看全部成员 →</a></div>
   </div>
 </section>
 """)
@@ -719,7 +700,7 @@ def build_index():
     p.append(f"""
 <section id="recruit" style="padding-top:20px">
   <div class="wrap">
-    {sec_head("JOIN US · 2026 秋季招新", '招新进行中 <span style="color:var(--cy)">●</span>', "面向全校，不限专业、不限年级。我们不看你现在会多少，看你想不想做点东西。", "05")}
+    {sec_head("JOIN US · 2026 秋季招新", '招新进行中 <span style="color:var(--cy)">●</span>', "面向全校，不限专业、不限年级。", "05")}
     <div class="bento" style="grid-template-columns:1fr 1fr;grid-auto-rows:auto;margin-bottom:40px">
       <div class="bt rv"><span class="ic">🎯</span><h3>报名要求</h3>
         <ul style="margin-top:10px">{''.join(f'<li style="font-size:14px;color:var(--dim);padding:5px 0">{esc(x)}</li>' for x in ["零基础可入——只要肯学，学长学姐从头带","不限专业——技术面前人人平等","每周至少 4 小时——投入才有产出","一台自己的电脑——配置不限，热爱不限"])}</ul></div>
@@ -729,6 +710,27 @@ def build_index():
     <div class="job-grid">{jobs}</div>
     <h2 style="margin:54px 0 6px;font-size:22px">招新时间线</h2>
     <ol class="steps rv">{steps}</ol>
+    <div style="text-align:center;margin-top:30px"><a class="btn btn-p" href="#contact">报名 / 联系我们 →</a></div>
+  </div>
+</section>
+""")
+
+    # 动态
+    items = "".join(f"""
+      <div class="tl-item rv">
+        <a class="tl-card spot" href="{life_url(a['id'])}">
+          <span class="d">{esc(a['date'])} · {esc(a['weekday'])}</span>
+          <h3>{esc(a['title'])}</h3>
+          <p>{esc(a['summary'])}</p>
+          <span class="go">查看详情 <span>→</span></span>
+        </a>
+      </div>""" for a in ACTIVITIES[:4])
+    p.append(f"""
+<section id="life" style="padding-top:20px">
+  <div class="wrap">
+    {sec_head("CLUB LIFE · 最近在干嘛", "社团不是一排链接，是每周都在发生的事", "每条动态都有独立详情页：现场照片、完整复盘、到场的人。", "06")}
+    <div class="tl">{items}</div>
+    <div style="text-align:center;margin-top:34px"><a class="btn btn-g" href="life.html">查看全部动态 →</a></div>
   </div>
 </section>
 """)
@@ -738,7 +740,7 @@ def build_index():
     p.append(f"""
 <section id="contact" style="padding-top:20px">
   <div class="wrap">
-    {sec_head("CONTACT · 找到我们", "随时来活动室坐坐", None, "06")}
+    {sec_head("CONTACT · 找到我们", "随时来活动室坐坐", None, "07")}
     <div class="contact-grid">{cc}</div>
   </div>
 </section>

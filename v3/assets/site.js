@@ -305,4 +305,91 @@
   $$('a[target="_blank"]').forEach(a => {
     if (!/rel=/.test(a.outerHTML)) a.setAttribute('rel', 'noopener');
   });
+
+  /* ============================================================
+   * 迷你终端（Hero 右侧）—— 敲命令认识象罔
+   * 演出数据来自同一份 build 数据，这里做演示用，写死不求同步
+   * ============================================================ */
+  const term = $('[data-term]');
+  if (term) {
+    const out = term.querySelector('[data-term-out]');
+    const input = term.querySelector('[data-term-in]');
+    const CMD_MAP = {
+      help: [
+        ['可用命令', 'c'],
+        ['  help      显示这份帮助', 'dim'],
+        ['  who       象罔是谁', 'dim'],
+        ['  projects  我们在做什么', 'dim'],
+        ['  stack     用些什么技术', 'dim'],
+        ['  join      查怎么加入', 'dim'],
+        ['  clear     清屏', 'dim'],
+      ],
+      who: [
+        ['象罔 · XIANGWANG', 'hl'],
+        ['出处：《庄子·天地》「象罔得珠」——', 'dim'],
+        ['无心而求，反而得之。', 'dim'],
+        ['我们是一群在动手折腾中撞见好东西的计算机社团。', 'dim'],
+      ],
+      projects: [
+        ['当前在研', 'hl'],
+        ['  OpenClaw       智能体底座（研究）', 'dim'],
+        ['  科研智能体     想法 → 可投稿论文（旗舰）', 'dim'],
+        ['  教育智能体     备课 / 批改 / 答疑', 'dim'],
+        ['  专利智能体     专利与文献检索', 'dim'],
+        ['  官网          其实就是你现在在的这个站点', 'ok'],
+      ],
+      stack: [
+        ['语言 / 框架', 'hl'],
+        ['  Python · TypeScript · FastAPI · Vue 3', 'dim'],
+        ['方向', 'hl'],
+        ['  Web 全栈 · LLM / RAG · Agent · 科研 Harness', 'dim'],
+      ],
+      join: [
+        ['欢迎加入象罔！', 'hl'],
+        ['  面向全校 · 不限专业 · 零基础可入', 'ok'],
+        ['向下滚动到「招新」区，或直接点按钮报名 →', 'dim'],
+      ],
+      ls: [['正在列出 ~/xiangwang …', 'dim'], ['  ideas/    代码/    demo/   docs/', 'ok'],
+        ['（放轻松，这只是个小彩蛋）', 'c']],
+      sudo: [['你胆子不小 😏 这里没有 sudo，只有动手做。', 'warn']],
+      sysinfo: [['象罔 OS  v2026', 'ok'], ['内核：知索不得，象罔得之', 'dim'],
+        ['运行时长：每周都在发生', 'dim']],
+      github: [['github.com/xiangwang-club', 'ok'], ['所有自研项目均开源。', 'dim']],
+      '❓': [],
+    };
+
+    const banner = [
+      ['象罔@club 交互终端 v1.0', 'hl'],
+      ['在这里敲几个字，它不会咬你。', 'c'],
+      ['输入 help 查看命令，开始了解我们 ↓', 'c'],
+    ];
+
+    const printLine = (text, cls) => {
+      const d = document.createElement('div');
+      d.className = 'clit-line ' + (cls || '');
+      d.textContent = text;
+      out.appendChild(d);
+      out.scrollTop = out.scrollHeight;
+      return d;
+    };
+    const boot = () => banner.forEach(([t, c]) => printLine(t, c));
+
+    const run = raw => {
+      const v = (raw || '').trim().split(/\s+/);
+      const name = (v[0] || '').toLowerCase();
+      printLine('$ ' + raw, '');
+      let cc;
+      if (!name) cc = [['（空输入也要有回应？输入 help 试试）', 'c']];
+      else if (name === 'clear') { out.innerHTML = ''; return; }
+      else if (name in CMD_MAP) cc = CMD_MAP[name];
+      else cc = [['未识别的命令: ' + name + '  —— 输入 help 看看有哪些。', 'warn']];
+      cc.forEach(([t, c]) => printLine(t, c));
+    };
+
+    boot();
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter') { run(input.value); input.value = ''; }
+    });
+    input.addEventListener('mouseenter', () => input.focus());
+  }
 })();
