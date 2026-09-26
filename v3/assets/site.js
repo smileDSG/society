@@ -11,6 +11,19 @@
   const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* ---------- 0. 环境光：桌面端随指针移动，移动端与减少动效时关闭 ---------- */
+  if (!reduced && window.matchMedia('(hover:hover) and (pointer:fine)').matches) {
+    let lightRaf = 0;
+    window.addEventListener('pointermove', e => {
+      if (lightRaf) return;
+      lightRaf = requestAnimationFrame(() => {
+        lightRaf = 0;
+        document.documentElement.style.setProperty('--pointer-x', `${((e.clientX / innerWidth) * 100).toFixed(1)}%`);
+        document.documentElement.style.setProperty('--pointer-y', `${((e.clientY / innerHeight) * 100).toFixed(1)}%`);
+      });
+    }, { passive: true });
+  }
+
   /* ---------- 1. 滚动进度 ---------- */
   const prog = $('#prog');
   const nav = $('nav');
@@ -372,7 +385,9 @@
       out.scrollTop = out.scrollHeight;
       return d;
     };
-    const boot = () => banner.forEach(([t, c]) => printLine(t, c));
+    const boot = () => banner.forEach(([t, c], i) => {
+      window.setTimeout(() => printLine(t, c), i * 180);
+    });
 
     const run = raw => {
       const v = (raw || '').trim().split(/\s+/);
