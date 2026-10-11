@@ -19,7 +19,7 @@ set -u
 
 REPO_DIR="/opt/xiangwang"
 MIRROR_FILE="$REPO_DIR/deploy/mirrors.txt"
-OWNER_REPO="ikun1111111111/society.git"
+OWNER_REPO="smileDSG/society.git"
 BRANCH="main"
 
 LOG_FILE="/var/log/xiangwang-autodeploy.log"
