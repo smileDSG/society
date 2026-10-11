@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>法枢 LexHub · 象罔社团作品</title>
+<meta name="description" content="象罔社团官方网站：社团生活、招新、作品、成员。">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/auth.css">
+<style>.sk-wrap{display:flex;flex-wrap:wrap;gap:0}
+.sk-chip{display:inline-block;margin:0 8px 8px 0;padding:4px 13px;border-radius:999px;background:rgba(53,230,255,.10);border:1px solid rgba(53,230,255,.30);color:#e8f6ff;font-size:14px;font-weight:600;line-height:1.7}
+.exp-list{list-style:none;padding:0;margin:0}
+.exp-list li{padding:13px 0;border-bottom:1px dashed rgba(255,255,255,.10)}
+.exp-list li:last-child{border-bottom:none;padding-bottom:4px}
+.exp-list b{display:block;font-size:15px;color:#fff;font-weight:600;margin-bottom:5px}
+.exp-list span{font-size:14px;color:var(--dim);line-height:1.8;display:block}
+.cv6{background:linear-gradient(135deg,#38bdf8,#0f766e)}</style>
+<noscript><style>html.gated body{opacity:1}</style></noscript>
+<script src="assets/auth.js"></script>
+</head>
+<body>
+<div id="prog"></div>
+<div class="bg-layers"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span><span class="grid"></span></div>
+<nav>
+  <div class="nav-in">
+    <a class="logo" href="index.html"><span class="seal">象</span><span class="logo-txt"><b>象罔社团</b><small>XIANGWANG CLUB</small></span></a>
+    <ul class="nav-links">
+      <li><a href="index.html#about">我们是谁</a></li>
+      <li><a href="life.html">社团动态</a></li>
+      <li><a href="members.html">成员</a></li>
+      <li><a href="projects.html">作品</a></li>
+      <li><a href="index.html#recruit">招新</a></li>
+      <li><a href="index.html#contact">联系</a></li>
+      <li><a href="area.html">成员专区</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="nav-auth" id="navAuth"></div>
+      <a class="nav-cta" href="index.html#recruit">加入我们 <i>→</i></a>
+      <button class="burger" aria-label="菜单">☰</button>
+    </div>
+  </div>
+</nav>
+<main>
+
+<div class="wrap crumb"><a href="index.html">首页</a> / <a href="projects.html">作品</a> / 法枢 LexHub</div>
+<section class="d-hero">
+  <div class="wrap">
+    <p class="kind">应用智能体 · 已部署运行</p>
+    <h1>法枢 LexHub</h1>
+    <p class="sub">5 个 AI Agent 分工审一份合同，出结构化审查报告与修订建议：条款提取 → 合同画像 → 风险分析 → 修订生成 → 质量审查，人只需要看最后的结构化报告并做专业判断。</p>
+    <div class="d-meta"><span>应用智能体</span><span>已部署运行</span><span>FastAPI</span><span>React</span><span>SQLite</span><span>向量库</span><span>Docker</span><span>5-Agent 流水线</span><span>A2A 总线</span></div>
+    <div class="d-cover" style="height:auto"><img src="assets/works/w7-01.png" alt="5-Agent 审查流水线：真实合同《解除劳动合同协议（有纠纷解除范本）》已完成五个阶段，右侧列出识别出的 3 条高风险条款及说明" loading="lazy" style="width:100%;height:auto;display:block"></div>
+  </div>
+</section>
+<div class="wrap d-body">
+  <div>
+    <h2>背后的故事</h2>
+    <p>律师与法务审一份合同，最耗时的不是「看懂」而是「看全」——条款要逐条提取、风险要逐类比对、改完还得回头复核改没改对，几十页的合同全靠人工过一遍，慢且容易漏。法枢 LexHub 把这件事拆给 5 个 Agent 流转，人只需要看最后的结构化报告并做专业判断。</p>
+    <div class="metrics rv"><div class="metric"><b><span data-count="258">0</span>份</b><span>审查报告</span></div><div class="metric"><b><span data-count="109">0</span>份</b><span>修订文档</span></div><div class="metric"><b><span data-count="5">0</span>个</b><span>审查 Agent</span></div><div class="metric"><b><span data-count="2">0</span>种</b><span>报告格式</span></div></div>
+    <h2>平台实拍</h2>
+    <div class="shots rv"><figure class="shot"><img src="assets/works/w7-01.png" alt="5-Agent 审查流水线：真实合同《解除劳动合同协议（有纠纷解除范本）》已完成五个阶段，右侧列出识别出的 3 条高风险条款及说明" loading="lazy"><figcaption>5-Agent 审查流水线：真实合同《解除劳动合同协议（有纠纷解除范本）》已完成五个阶段，右侧列出识别出的 3 条高风险条款及说明</figcaption></figure><figure class="shot"><img src="assets/works/w7-02.png" alt="任务历史：22 条真实审查任务（已完成 / 失败、耗时、进度），覆盖劳动、数据、采购等多类合同" loading="lazy"><figcaption>任务历史：22 条真实审查任务（已完成 / 失败、耗时、进度），覆盖劳动、数据、采购等多类合同</figcaption></figure><figure class="shot"><img src="assets/works/w7-03.png" alt="报告中心：258 份审查报告 + 109 份修订文档，Markdown / JSON 双格式，可打开与导出" loading="lazy"><figcaption>报告中心：258 份审查报告 + 109 份修订文档，Markdown / JSON 双格式，可打开与导出</figcaption></figure>
+    </div>
+    <h2>项目时间线</h2>
+    <ol class="steps rv"><li><p class="t">v1.0.0</p><p class="h">已部署运行</p><p class="d">Docker 全栈上线，本地实例累计 258 份审查报告、109 份修订文档。</p></li><li><p class="t">流水线</p><p class="h">5 Agent 流转</p><p class="d">extraction / reader / analysis / revision / review 各司其职，Review 与 Revision 双向协商。</p></li><li><p class="t">质检</p><p class="h">零 LLM 消耗</p><p class="d">Supervisor 规则化质量评估与路由，单次审查成本可控。</p></li></ol>
+    <div class="card" style="margin-top:6px">
+      <h4>我们学到了什么</h4>
+      <ul><li style="font-size:14px;color:var(--dim);padding:7px 0 7px 18px;position:relative"><span style="position:absolute;left:0;color:var(--cy)">▸</span>生产环境和本地跑通是两件事</li><li style="font-size:14px;color:var(--dim);padding:7px 0 7px 18px;position:relative"><span style="position:absolute;left:0;color:var(--cy)">▸</span>上线前一定要有监控和回滚方案</li><li style="font-size:14px;color:var(--dim);padding:7px 0 7px 18px;position:relative"><span style="position:absolute;left:0;color:var(--cy)">▸</span>文档写给自己看的，也写给下一届看的</li></ul>
+    </div>
+    <div class="pager"><a href="work-w6.html"><span class="lb">← PREV</span>ARISAI</a><a class="r" href="work-w8.html"><span class="lb">NEXT →</span>AFCP</a></div>
+  </div>
+  <aside class="side">
+    <div class="card">
+      <h4>项目档案</h4>
+      <div class="spec"><span class="k">分类</span><span class="v">应用智能体</span></div>
+      <div class="spec"><span class="k">状态</span><span class="v">已部署运行</span></div>
+      <div class="spec"><span class="k">技术栈</span><span class="v">FastAPI / React / SQLite / 向量库 / Docker / 5-Agent 流水线 / A2A 总线</span></div>
+      <div class="spec"><span class="k">队长</span><span class="v">杨添龙</span></div>
+      <div class="spec"><span class="k">参与成员</span><span class="v">1 人（1 名队长 + 0 名组员）</span></div>
+    </div>
+    <div class="card">
+      <h4>他们做了这个项目</h4>
+      <div class="side-links"><a href="member-yangtianlong.html"><span>杨添龙<span style="display:inline-block;margin-left:8px;padding:1px 8px;border-radius:999px;background:linear-gradient(135deg,#35e6ff,#8b5cf6);color:#05070e;font-size:11.5px;font-weight:700;line-height:1.7;vertical-align:middle;letter-spacing:.02em">队长</span></span><span class="ar">机器学习 →</span></a></div>
+    </div>
+    <div class="card">
+      <h4>相关链接</h4>
+      <div class="side-links"><a href="#" target="_blank"><span>GitHub 仓库</span><span class="ar">↗</span></a><a href="#" target="_blank"><span>使用文档</span><span class="ar">↗</span></a></div>
+    </div>
+  </aside>
+</div>
+<section style="padding-top:0">
+  <div class="wrap">
+    <h2 style="font-size:20px;margin-bottom:20px">看看其他作品</h2>
+    <div class="rel-grid">
+      <a class="beam tilt" href="work-w1.html"><div class="beam-in wk spot">
+        <div class="cover cv1" style="height:96px"><span class="em" style="font-size:34px">🦾</span></div>
+        <div class="body" style="padding:15px 18px 18px"><span class="cat">Agent 工程</span><h3 style="font-size:16px">OpenClaw</h3></div>
+      </div></a>
+      <a class="beam tilt" href="work-w2.html"><div class="beam-in wk spot">
+        <div class="cover cv2" style="height:96px"><span class="em" style="font-size:34px">📚</span></div>
+        <div class="body" style="padding:15px 18px 18px"><span class="cat">应用智能体</span><h3 style="font-size:16px">智眸无界</h3></div>
+      </div></a>
+      <a class="beam tilt" href="work-w3.html"><div class="beam-in wk spot">
+        <div class="cover cv3" style="height:96px"><span class="em" style="font-size:34px">🔍</span></div>
+        <div class="body" style="padding:15px 18px 18px"><span class="cat">应用智能体</span><h3 style="font-size:16px">专利智能体</h3></div>
+      </div></a></div>
+  </div>
+</section>
+
+</main>
+<footer>
+  <div class="foot-in">
+    <span class="motto">// 象罔得之 —— 无心而求，反而得之</span>
+    <span class="foot-links">
+      <a href="index.html">首页</a>
+      <a href="projects.html">作品</a>
+      <a href="members.html">成员</a>
+      <a href="life.html">动态</a>
+      <a href="index.html#recruit">招新</a>
+    </span>
+    <span>© 2026 象罔社团 · 内容占位，上线前替换</span>
+  </div>
+</footer>
+<button id="top-btn" aria-label="回到顶部">↑</button>
+<script src="assets/site.js"></script>
+</body>
+</html>

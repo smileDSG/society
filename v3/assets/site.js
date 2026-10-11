@@ -367,7 +367,6 @@
       sudo: [['你胆子不小 😏 这里没有 sudo，只有动手做。', 'warn']],
       sysinfo: [['象罔 OS  v2026', 'ok'], ['内核：知索不得，象罔得之', 'dim'],
         ['运行时长：每周都在发生', 'dim']],
-      github: [['github.com/xiangwang-club', 'ok'], ['所有自研项目均开源。', 'dim']],
       '❓': [],
     };
 

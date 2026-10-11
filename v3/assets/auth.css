@@ -447,3 +447,43 @@ html.gated body { opacity: 0; }
   box-shadow: 0 18px 50px rgba(0, 0, 0, .6);
 }
 .toast.on { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+
+/* ============================================================
+ * 手册定稿叠加层（auth）：对齐 site.css 的 dark manual
+ * 去掉所有青紫渐变、光斑与扫光，只留精确青色与发丝线。
+ * ============================================================ */
+/* 1) 光斑全部关闭 */
+.ac-glow{display:none!important}
+/* 2) 所有渐变一律改为平面填充 */
+.auth-card{background:var(--panel);border:1px solid var(--line);border-radius:6px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.auth-card::before{display:none!important}
+.atab-in{background:rgba(86,210,255,.10);border:1px solid var(--line-2);border-radius:4px}
+.apanel,.ab-body,.ab-in,.acard{border-radius:6px}
+.ain,.afield input,.afield select{border-radius:4px}
+.abtn,.nav-login{border-radius:4px}
+.nav-login{background:transparent;border:1px solid var(--line-2);color:var(--dim)}
+.nav-login:hover{border-color:var(--cy);color:var(--cy)}
+/* 3) 品牌色统一为青色，去掉紫 */
+.aflash,.ahint,.aerr,.aok .bar i,.abadge,.ac-badge{
+  background-image:none!important;
+}
+.ac-badge,.abadge{background:rgba(86,210,255,.10)!important;color:var(--cy)!important;border:1px solid var(--line-2)}
+.abtn-p,.ac-btn-p{background:var(--cy)!important;background-image:none!important;color:#04121f!important;box-shadow:none!important}
+.abtn-p:hover,.ac-btn-p:hover{background:#7ddcff!important;box-shadow:none!important}
+.abtn-g{background:transparent!important;background-image:none!important;border:1px solid var(--line-2)!important;color:var(--txt)!important}
+.abtn-g:hover{border-color:var(--cy)!important;color:var(--cy)!important}
+/* 4) 扫光/流光动画关闭 */
+.auth-card::after,.abtn::after,.apanel::after{display:none!important}
+@keyframes fill{to{width:110%}}
+/* 5) 邀请码/代码行 */
+.code-row code,.code-table code{color:var(--cy)}
+.code-row button:hover{border-color:var(--cy);background:rgba(86,210,255,.10)}
+/* 6) 表单焦点 */
+.ain:focus,.afield input:focus,.afield select:focus{border-color:var(--cy);box-shadow:none}
+/* 7) 大型水印字若存在，压低 */
+.auth-mark{opacity:.05!important;color:var(--cy)!important;-webkit-text-stroke:0!important}
+/* 水印是刻意溢出的大字装饰：由父级裁剪，避免撑出横向滚动 */
+.auth-brand{overflow:hidden}
+@media(max-width:1100px){
+  .auth-mark{font-size:110px;top:-14px;left:-10px}
+}

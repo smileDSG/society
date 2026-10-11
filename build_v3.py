@@ -40,16 +40,20 @@ WORKS = [
                    ("2026.09", "沙盒安全", "执行环境隔离 + 权限收口，前端风格统一同步完成。")],
          contributors=["caitong", "hehongquan", "chenjiamin", "caiquanyou"], lead="caitong",
          links=[("GitHub 仓库", "#"), ("内部文档", "#")]),
-    dict(id="w2", title="教育智能体", cat="应用智能体", em="📚", cv="cv2", status="开发中",
-         stack=["Python", "LLM", "RAG", "PostgreSQL", "Streamlit"],
-         desc="面向教学场景的智能体：备课检索、作业批改辅助与答疑，覆盖一门课从准备到答疑的完整链路。",
-         metrics=[("3", "个", "教学环节"), ("1", "键", "导入课件"), ("85", "%", "答疑采纳率"), ("0", "", "数据外传")],
-         story="第一版答疑经常一本正经地编教材里没有的内容。补上自建教案与课件的检索溯源之后，每一句回答都能点开出处，老师才敢真的拿去用。",
-         timeline=[("2026.06", "选题", "从“每学期重复回答同一批问题”这个真实痛点起步。"),
-                   ("2026.08", "接检索", "校内自建知识库 + 引用溯源，回答可点开原文。"),
-                   ("2026.09", "试用", "进入一门专业课的教学环节小规模试用。")],
+    dict(id="w2", title="智眸无界", cat="应用智能体", em="📚", cv="cv2", status="可完整跑通",
+         stack=["LangGraph", "多智能体", "Zod", "LibreOffice", "知识图谱", "题库引擎"],
+         desc="把一门课交给 AI 教师和 AI 同学，自动生成可互动的课堂、讲义与学习路径：学生说清目标与薄弱点，系统抽 8 维画像，编排 Agent 产出讲义、PPT、题库与代码案例，经核验与安全审核输出带理由的学习路径。",
+         metrics=[("12", "章", "课程讲义"), ("120", "道", "题库"), ("48", "节点", "知识图谱"), ("9", "种", "算法动画")],
+         story="高校学生学专业课，资料散落、不知先学什么与薄弱点；通用 AI 也可能出错、无人跟踪进度。智眸无界把知识库、题库、图谱接成多智能体链路：学生说清目标与薄弱点，系统抽 8 维画像，Director 编排 Agent 产出讲义、PPT、题库、代码案例、视频脚本，经核验与安全审核输出带理由的学习路径；练习回流更新画像，闭环。",
+         timeline=[("2026.06", "选题", "从「专业课资料散落、无人跟踪进度」的真实痛点起步。"),
+                   ("2026.08", "多智能体链路", "知识库 + 题库 + 图谱接成链路，Director 编排产出讲义 / PPT / 题库。"),
+                   ("2026.10", "可完整跑通", "v0.2.1：主页一句话生成整堂课，单测 242 / 242 通过。")],
          contributors=["sunjiale", "chenmingrui", "guoshijun"], lead="sunjiale",
-         links=[("GitHub 仓库", "#"), ("使用文档", "#")]),
+         links=[("GitHub 仓库", "#"), ("使用文档", "#")],
+         imgs=[("assets/works/w2-01.png", "互动课堂：播放 AI 生成的课，左侧 AI 教师「星野老师」旁白，中间板书与表格，可暂停回看"),
+               ("assets/works/w2-02.png", "个性化资料生成：说清目标与薄弱点，系统抽 8 维学习画像，即可生成个性化资料"),
+               ("assets/works/w2-03.png", "学习情况总览：一屏呈现知识掌握、连续打卡、学习时长与正确率，并给出进阶路径"),
+               ("assets/works/w2-04.png", "解题闭环：一道空间向量题的分步骤解答，可一键加入错题本，用于后续复习与画像更新")]),
     dict(id="w3", title="专利智能体", cat="应用智能体", em="🔍", cv="cv3", status="开发中",
          stack=["Python", "OpenAlex", "LLM", "Embedding", "FastAPI"],
          desc="专利与文献检索智能体：找得到标题，也要把摘要、权利要求与引用关系一次拿全。",
@@ -80,91 +84,112 @@ WORKS = [
                    ("2026.10", "工程化", "跨会话恢复 + 缓存，成本与延迟同步下降。")],
          contributors=["raoyuxuan", "zhuyuanmei", "chenzhiming"], lead="raoyuxuan",
          links=[("GitHub 仓库", "#"), ("技术博客", "#")]),
-    dict(id="w6", title="科研智能体", cat="科研 Harness", em="🔬", cv="cv6", status="开发中",
-         stack=["Python", "LLM", "RAG", "Docker", "论文模板"],
-         desc="社团旗舰项目：把科研想法到可投稿论文拆成六个可复跑阶段，每阶段都有产物、有留痕、可回退。",
-         metrics=[("6", "阶段", "标准流程"), ("100", "%", "阶段留痕"), ("7", "d", "单阶段周期"), ("4", "组", "跨组协同")],
-         story="科研最容易断在“中间那一大段”：想法很好，落地没有抓手。这个项目把流程切成六段，每段结束必须留下一个能被人检查的产物——跑不完不许进下一阶段。",
-         timeline=[("2026.07", "立项", "确定六阶段目标与每阶段的交付物标准。"),
-                   ("2026.09", "四条主线", "文献、实验环境、智能体编排、论文指南四条线并行推进。"),
-                   ("2026.10", "阶段验收", "以周为单位做阶段验收与缺陷回退。")],
-         contributors=["yangtianlong", "qinziyuan", "raoyuxuan", "sunjiale", "caikai"], lead="yangtianlong",
-         links=[("GitHub 仓库", "#"), ("流程指南", "#")]),
+    dict(id="w6", title="ARISAI", cat="科研 Harness", em="🔬", cv="cv6", status="可完整跑通",
+         stack=["Python", "litellm", "Docker", "SSE", "子智能体路由", "论文模板", "GPU 调度"],
+         desc="让研究者用「对话」把一篇论文从选题一路跑到可提交的 PDF：围绕一个科研项目持续对话，系统按意图自动路由到文献 / 实验 / 写作 / 通用子智能体，产物即时落库并实时推送到前端。",
+         metrics=[("39", "个", "科研项目"), ("13", "套", "期刊模板"), ("11", "维", "出稿审核"), ("10+", "轮", "自主运行")],
+         story="科研人员做一项研究，工具链是碎的——查文献一个站、跑实验一台机器、画图另一个工具、写作排版再换一套，上下文来回搬、状态来回找。ARISAI 把这些收进一个对话界面：用户围绕一个项目持续对话，系统按意图自动路由到子智能体，产物即时落库并实时推送到前端。",
+         timeline=[("2026.07", "立项", "确定对话驱动的科研智能体方向，把碎掉的工具链收进一个界面。"),
+                   ("2026.09", "全链路跑通", "从零到 PDF 真机验收，连续自主运行 10+ 轮、直接产出可编译 PDF。"),
+                   ("2026.10", "多源检索 + 审核", "文献多源检索入库，出稿前过 11 维度期刊级审核。")],
+         contributors=["yangtianlong", "raoyuxuan", "qinziyuan", "sunjiale", "caikai"], lead="raoyuxuan",
+         links=[("GitHub 仓库", "#"), ("流程指南", "#")],
+         imgs=[("assets/works/w6-01.png", "项目总览：39 个科研项目、运行中状态、最近实验一屏可见"),
+               ("assets/works/w6-02.png", "对话页：智能体自主执行一个「目标轮」，带思考过程与工具调用，右侧是实时产物树"),
+               ("assets/works/w6-03.png", "实验看板：单次实验的真实运行日志、指标（FPR/TPR）、数据卡片条与自动生成的论文图"),
+               ("assets/works/w6-04.png", "出稿：套 ICLR 2026 模板逐章写作，主文件、参考文献、样式文件齐备，可直接编译 PDF")]),
+    dict(id="w7", title="法枢 LexHub", cat="应用智能体", em="⚖️", cv="cv3", status="已部署运行",
+         stack=["FastAPI", "React", "SQLite", "向量库", "Docker", "5-Agent 流水线", "A2A 总线"],
+         desc="5 个 AI Agent 分工审一份合同，出结构化审查报告与修订建议：条款提取 → 合同画像 → 风险分析 → 修订生成 → 质量审查，人只需要看最后的结构化报告并做专业判断。",
+         metrics=[("258", "份", "审查报告"), ("109", "份", "修订文档"), ("5", "个", "审查 Agent"), ("2", "种", "报告格式")],
+         story="律师与法务审一份合同，最耗时的不是「看懂」而是「看全」——条款要逐条提取、风险要逐类比对、改完还得回头复核改没改对，几十页的合同全靠人工过一遍，慢且容易漏。法枢 LexHub 把这件事拆给 5 个 Agent 流转，人只需要看最后的结构化报告并做专业判断。",
+         timeline=[("v1.0.0", "已部署运行", "Docker 全栈上线，本地实例累计 258 份审查报告、109 份修订文档。"),
+                   ("流水线", "5 Agent 流转", "extraction / reader / analysis / revision / review 各司其职，Review 与 Revision 双向协商。"),
+                   ("质检", "零 LLM 消耗", "Supervisor 规则化质量评估与路由，单次审查成本可控。")],
+         contributors=["yangtianlong"], lead="yangtianlong",
+         links=[("GitHub 仓库", "#"), ("使用文档", "#")],
+         imgs=[("assets/works/w7-01.png", "5-Agent 审查流水线：真实合同《解除劳动合同协议（有纠纷解除范本）》已完成五个阶段，右侧列出识别出的 3 条高风险条款及说明"),
+               ("assets/works/w7-02.png", "任务历史：22 条真实审查任务（已完成 / 失败、耗时、进度），覆盖劳动、数据、采购等多类合同"),
+               ("assets/works/w7-03.png", "报告中心：258 份审查报告 + 109 份修订文档，Markdown / JSON 双格式，可打开与导出")]),
+    dict(id="w8", title="AFCP", cat="Agent 工程", em="🖥️", cv="cv1", status="可完整跑通",
+         stack=["网关 API", "PostgreSQL", "Redis", "Qdrant", "Vue", "Docker", "语义缓存"],
+         desc="把散落各处的 GPU 节点收成一个 OpenAI 兼容出口，自动选最快的那台：业务只按 OpenAI 的格式调一次，选节点、重试、限流、记账由网关负责；多一个节点只是多一行注册。",
+         metrics=[("1957", "次", "推理请求"), ("4", "个", "模型"), ("5", "个", "节点"), ("22", "%", "缓存命中")],
+         story="手上有几张卡、几台机器的人，很快会遇到同一堆事：节点跑的是 Ollama / vLLM / SGLang 各不一样，接口互不兼容；谁快谁慢、哪台已经挂了、额度怎么分，全靠人盯；业务侧想换模型，还得为每家引擎各写一套客户端。AFCP 在中间架一层网关：业务只按 OpenAI 的格式调一次，选节点、重试、限流、记账由网关负责。",
+         timeline=[("v1.0.0", "可完整跑通", "本地拉起全栈，注册 mock 节点后打通注册 → 选点 → 转发 → 日志 → 缓存整条链路。"),
+                   ("路由", "多策略调度", "加权延迟 / 模型亲和 / 轮询，改 config 热重载即生效，不重启服务。"),
+                   ("可运营", "三层可观测", "Prometheus + Grafana + Loki，Vue 管理台 + Docker Compose 一键部署。")],
+         contributors=["yangtianlong"], lead="yangtianlong",
+         links=[("GitHub 仓库", "#"), ("使用文档", "#")],
+         imgs=[("assets/works/w8-01.png", "管理台总览：累计 1957 次推理请求、语义缓存命中率 22%，熔断器面板显示当前无节点熔断"),
+               ("assets/works/w8-02.png", "算力节点：「+添加节点」把推理节点登记进来，实时显示健康状态、延迟与启停"),
+               ("assets/works/w8-03.png", "路由决策日志：每次请求「候选节点 → 选中节点 → 决策原因」全程可回查"),
+               ("assets/works/w8-04.png", "模型注册表：4 个模型分别挂到不同后端（openai / vllm）与节点，标注 GPU 型号、最大上下文与启停状态")]),
 ]
 
 MEMBERS = [
     dict(id="yangtianlong", name="杨添龙", post="社长 · 外联负责人", tier="社团负责人", college="计算机/软件学院", major="计算机科学与技术", hue=5,
-         dir=["全栈", "小程序"],
-         quote="全栈不是什么都会一点，是能一个人把想法跑通到最后一步。",
-         bio="全栈方向，科研智能体项目负责人，也维护社团对外站点。",
-         skills=["全栈", "TypeScript", "Node.js", "微信小程序", "ECharts"],
-         exp=[("科研智能体 · 队长", "负责六阶段流程编排与对外接口，把阶段验收标准落成可跑的检查项。"),
-              ("社团官网 v3 · 技术负责", "带 2 人搭起 38 个页面的站点，改一处数据全站重生成。")],
+         dir=["机器学习", "计算机视觉", "智能体"],
+         quote="做好当下",
+         bio="架构方向，负责社团多个项目的统筹与设计实现，目前在研究 AI 与人类的有益性结合。",
+         skills=["Python", "FastAPI", "ComfyUI", "LangGraph", "LangChain", "PyTorch"],
+         exp=[("社团统筹", "作为团长负责实验设计、架构设计与计划规划。")],
          works=["w6"], joined="2025 年秋季",
-         qa=[("给新人的建议", "先做一个自己真的会用的小工具，比刷十个 demo 有用。")]),
+         qa=[("为什么加入", "因为梦想。"), ("给新人的建议", "戒骄戒躁。")]),
     dict(id="sunjiale", name="孙迦勒", post="副社长 · 技术部部长", tier="社团负责人", college="人工智能学院", major="人工智能", hue=2,
-         dir=["大模型", "RAG"],
-         quote="检索做不好，模型再强也是在编故事。",
-         bio="RAG 方向，负责教育智能体的知识库与检索链路。",
-         skills=["大模型应用", "RAG", "向量检索", "Python", "数据处理"],
-         exp=[("教育智能体 · 队长", "带 2 人做知识库与检索链路，召回切分策略重做后命中率提升 12%。"),
-              ("社团技术路线", "制定代码规范与阶段验收标准，统筹四个组的协作节奏。")],
-         works=["w2", "w6"], joined="2026 年春季",
+         dir=["后端", "Agent"],
+         quote="AI 是一个很好的工具，但它是工具，没法代替人。",
+         bio="全栈方向，主负责教育智能体的统筹、设计与优化，目前正在优化教育智能体。",
+         skills=["Python", "Java", "PostgreSQL", "AI Infra", "AI Agent"],
+         exp=[("教育智能体 · 组长", "设计并完成教育智能体的开发（Next.js / Claude / Codex），已实现一个成品。")],
+         works=["w2"], joined="2026 年 4 月",
          qa=[("最近在优化什么", "把召回的 chunk 切分策略重做了一遍，命中率提升了 12%。")]),
-
     dict(id="caitong", name="蔡僮", post="技术一组组长", tier="技术部", college="沃特福德学院", major="电气工程及其自动化", hue=1,
-         dir=["嵌入式", "硬件"],
-         quote="代码能烧进板子里，就不再是屏幕上的字符了。",
-         bio="硬件+嵌入式方向，社团里唯一能自己焊板子的人。",
-         skills=["嵌入式", "C", "STM32", "电路设计", "Python"],
-         exp=[("OpenClaw · 队长", "主导工具注册与沙盒隔离，把三份重复的模型调用代码收敛成一套底座。"),
-              ("联网温湿度节点", "自己焊板子 + 写固件，把实验室传感器数据接进社团平台。")],
-         works=["w1"], joined="2026 年春季",
-         qa=[("为什么来软件社团", "想让硬件和软件接上，一个人焊不出一个联网的设备。")]),
+         dir=["前端", "Vue"],
+         quote="拥抱 AI。",
+         bio="前端方向，负责科研智能体前端页面的设计。",
+         skills=["Java", "Python"],
+         exp=[("科研智能体 · 前端组长", "负责前端页面设计与优化。")],
+         works=["w6"], joined="2026 年 3 月",
+         qa=[("为什么加入", "提升自己。"), ("给新人的建议", "不要畏惧困难。")]),
     dict(id="caikai", name="蔡凯", post="技术二组组长", tier="技术部", college="沃特福德学院", major="人工智能", hue=3,
          dir=["Python", "机器学习"],
          quote="调参调到凌晨三点，看到 loss 掉下去的那一刻，值了。",
          bio="机器学习方向，正在做校园场景下的小样本分类实验。",
          skills=["Python", "机器学习", "PyTorch", "数据清洗"],
-         exp=[("专利智能体 · 队长", "负责文献检索主功能，打通标题命中到详情抓取的链路。"),
-              ("小样本分类实验", "在校园场景下跑通一套小样本分类流程，含训练与评测脚本。")],
+         exp=[("专利智能体 · 队长", "负责文献检索主功能，打通标题命中到详情抓取的链路。"), ("小样本分类实验", "在校园场景下跑通一套小样本分类流程，含训练与评测脚本。")],
          works=["w3", "w6"], joined="2026 年春季",
          qa=[("为什么加入", "想找人一起复现论文，一个人读 paper 太容易放弃。")]),
     dict(id="raoyuxuan", name="饶宇轩", post="技术三组组长", tier="技术部", college="计算机与软件学院", major="软件工程", hue=5,
-         dir=["后端", "Go"],
-         quote="接口的响应时间，是用户唯一能感知到的“你的态度”。",
-         bio="后端方向，Go 爱好者，负责 Hermes 的服务端与记忆链路。",
-         skills=["Go", "后端", "Redis", "MySQL", "Docker"],
-         exp=[("Hermes · 队长", "做记忆分层与上下文压缩，跨会话恢复改成一条命令。"),
-              ("服务端开发", "负责社团多个项目的接口设计与容器化部署。")],
-         works=["w5", "w6"], joined="2025 年秋季",
-         qa=[("性能优化心得", "先上监控，再谈优化。没有数据支撑的优化都是玄学。")]),
+         dir=["Agent 开发"],
+         quote="学 Agent 最好的方法就是细致钻研",
+         bio="Agent 开发，负责社团科研智能体上下文工程、记忆和提示词工程部分以及论文撰写调试。",
+         skills=["Java", "Python", "FastAPI", "Spring", "LangChain", "LangGraph", "Milvus", "Qdrant", "pgvector", "MySQL", "Redis", "Docker"],
+         exp=[("科研智能体 · 组长", "负责上下文设计、记忆与提示词工程；上下文分六大区编排，成本降低约 30%，缓存命中率提升至约 90%。"), ("论文撰写与调试", "参与相关论文的撰写与实验调试。")],
+         works=["w6"], joined="2026 年 5 月",
+         qa=[("为什么加入", "学习团队开发契约，多学多干，积累经验。"), ("给新人的建议", "欢迎加入象罔社，这是一个相亲相爱的大家庭。")]),
     dict(id="qinziyuan", name="秦梓源", post="技术四组组长", tier="技术部", college="人工智能学院", major="人工智能", hue=2,
          dir=["大模型", "LLM 应用"],
          quote="大模型不是答案机器，是概率机器——用的人得自己兜底。",
          bio="LLM 应用方向，DeepseekHarness 的核心开发。",
          skills=["LLM 应用", "RAG", "Prompt 工程", "Python"],
-         exp=[("DeepseekHarness · 队长", "把长任务拆成六段状态机，崩了能续跑而不是从头再来。"),
-              ("教育智能体 · 组员", "参与知识库搭建与检索调优。")],
+         exp=[("DeepseekHarness · 队长", "把长任务拆成六段状态机，崩了能续跑而不是从头再来。"), ("教育智能体 · 组员", "参与知识库搭建与检索调优。")],
          works=["w4", "w6"], joined="2026 年春季",
          qa=[("对 AI 的看法", "工具会越来越强，但“问什么问题”这件事永远属于人。")]),
     dict(id="chenmingrui", name="陈明睿", post="项目运营部部长", tier="职能部门", college="雷丁学院", major="大气科学", hue=1,
-         dir=["Python", "科学计算"],
-         quote="在这里我第一次看到自己写的东西，被完全不认识的同学拿去用。那种感觉，上课给不了。",
-         bio="喜欢用代码处理气象数据，也喜欢把数据画成别人一眼能看懂的图。",
-         skills=["Python", "数据可视化", "Linux", "Git"],
-         exp=[("教育智能体 · 组员", "梳理教学场景清单，整理课堂试用反馈。"),
-              ("项目运营", "排期、周报与成果归档，跟踪跨组协作与阶段交付。")],
+         dir=["前端"],
+         quote="让智能体“懂”用户，从极致的人性化交互开始。",
+         bio="目前主攻前端开发，负责教育智能体的前端页面人性化搭建与交互实现。",
+         skills=["HTML", "CSS", "JavaScript", "TypeScript", "React", "Live2D"],
+         exp=[("教育智能体 · 前端开发", "负责页面人性化搭建与 Live2D 集成，大幅提升教育场景下的用户陪伴感与交互体验。")],
          works=["w2"], joined="2025 年秋季",
-         qa=[("为什么加入社团", "想找一群真的在写代码的人，而不是只在群里转发面经的人。"),
-             ("最近在学什么", "在啃 xarray，想把社团的气象数据集整理成一份能直接用的教程。")]),
+         qa=[("为什么加入社团", "想找一群真的在写代码的人，而不是只在群里转发面经的人。"), ("最近在学什么", "在啃 xarray，想把社团的气象数据集整理成一份能直接用的教程。")]),
     dict(id="zhengzixin", name="郑子鑫", post="宣传视觉部部长", tier="职能部门", college="网络空间安全学院", major="网络空间安全", hue=4,
-         dir=["CTF", "Linux"],
-         quote="安全不是把门锁死，是知道门在哪里、谁会来推。",
-         bio="数据抓取方向，负责专利智能体的详情链路与环境配置。",
-         skills=["数据抓取", "Linux", "Docker", "Go"],
-         exp=[("专利智能体 · 组员", "负责详情抓取链路与环境配置。"),
-              ("视觉物料", "统一社团对外 PPT 与海报的视觉规范。")],
+         dir=["前端 (Vue)", "Java 后端 (Spring Boot)"],
+         quote="AI 为器，不可恃之而废思；扎实基础，夯实自身本领。",
+         bio="前端方向，目前在做专利智能体前端维护。",
+         skills=["Python", "Vue", "Spring Boot", "Docker", "Git", "MySQL"],
+         exp=[("专利智能体 · 组员", "前端架构重构，大幅提高代码可维护性；开发 LLM 多轮自迭代审核引擎，设计授权式增量案卷编排与状态机，支撑复杂案卷上下文的长效管理。")],
          works=["w3"], joined="2025 年秋季",
          qa=[("第一次参赛", "省赛被一题 SQL 注入卡了三小时，出来以后把这类题全刷了一遍。")]),
     dict(id="yuyue", name="虞越", post="成员", tier="成员", college="软件学院", major="软件工程", hue=2,
@@ -174,8 +199,7 @@ MEMBERS = [
          skills=["Java", "Spring Boot", "MySQL", "Docker"],
          exp=[("专利智能体 · 组员", "参与检索接口开发，负责结果分页与缓存。")],
          works=["w3"], joined="2025 年秋季",
-         qa=[("在社团做的最酷的事", "带着三个大一同学重构了二手平台的订单模块，交付那天一起吃了顿烧烤。"),
-             ("给新人的建议", "别急着学框架，先把 HTTP 状态码和数据库事务搞明白，后面会省很多时间。")]),
+         qa=[("在社团做的最酷的事", "带着三个大一同学重构了二手平台的订单模块，交付那天一起吃了顿烧烤。"), ("给新人的建议", "别急着学框架，先把 HTTP 状态码和数据库事务搞明白，后面会省很多时间。")]),
     dict(id="guoshijun", name="郭时军", post="成员", tier="成员", college="教师教育学院", major="教育技术学", hue=3,
          dir=["教学产品设计"],
          quote="工具好不好用，看老师第二天还愿不愿意打开它。",
@@ -183,76 +207,63 @@ MEMBERS = [
          skills=["教学设计", "需求分析", "数据分析"],
          exp=[("教育智能体 · 组员", "把一门课的教学环节拆成可实现的场景清单。")],
          works=["w2"], joined="2026 年春季",
-         qa=[("为什么做这个项目", "见过太多“看起来很聪明、老师用一次就放弃”的工具，想反过来做。"),
-             ("怎么判断做得对不对", "看真实课堂里有没有人第二次打开它。")]),
+         qa=[("为什么做这个项目", "见过太多“看起来很聪明、老师用一次就放弃”的工具，想反过来做。"), ("怎么判断做得对不对", "看真实课堂里有没有人第二次打开它。")]),
     dict(id="caiquanyou", name="蔡泉佑", post="成员", tier="成员", college="雷丁学院", major="数据科学与大数据技术", hue=3,
-         dir=["Python", "数据分析"],
-         quote="数据不会骗人，但会沉默——得有人替它说话。",
-         bio="做数据分析，也在帮 AI 组维护知识库的清洗脚本。",
-         skills=["Python", "Pandas", "SQL", "爬虫"],
-         exp=[("OpenClaw · 组员", "写数据清洗脚本，统一各组工具的输入格式。")],
-         works=["w1"], joined="2025 年秋季",
-         qa=[("为什么选象罔", "因为这里能拿到真实的脏数据，课本上的数据集太干净了。")]),
+         dir=["Java 后端", "Agent 开发", "数据分析"],
+         quote="需要看准一个方向，主攻一个领域。",
+         bio="目前在科研智能体做前端优化。",
+         skills=["Java", "Python"],
+         exp=[("专利智能体", "参与项目开发。"), ("科研智能体", "前端优化。")],
+         works=["w3", "w6"], joined="2026 年 5 月",
+         qa=[("为什么加入", "学习新技术，做相关项目积累经验。"), ("给新人的建议", "根据自己的兴趣选择。")]),
     dict(id="zhuyuanmei", name="朱芫枚", post="成员", tier="成员", college="计算机/软件学院", major="软件工程", hue=5,
-         dir=["前端", "Vue"],
-         quote="一个按钮的位置改八遍，不是强迫症，是有人真的会因此少点错一次。",
-         bio="前端方向，负责社团多个项目的 UI 实现与组件库维护。",
-         skills=["Vue3", "TypeScript", "CSS", "Figma"],
-         exp=[("Hermes · 组员", "负责控制台界面与状态可视化。"),
-              ("社团组件库", "搭了一套自用组件库，省得每个项目重写一遍按钮。")],
-         works=["w5"], joined="2025 年秋季",
-         qa=[("最近在折腾什么", "在给社团搭一套自己的组件库，省得每个项目都重写一遍按钮。")]),
+         dir=["后端", "Agent"],
+         quote="身体好，心态好。",
+         bio="负责 Agent 的搭建。",
+         skills=["Python", "FastAPI", "MySQL", "Docker"],
+         exp=[("Hermes", "负责 token 预算化。")],
+         works=["w5"], joined="2026 年 4 月",
+         qa=[("为什么加入", "氛围棒棒。"), ("给新人的建议", "多尝试。")]),
     dict(id="chenjiamin", name="陈佳敏", post="成员", tier="成员", college="计算机学院", major="计算机科学与技术", hue=2,
          dir=["算法", "竞赛"],
          quote="题解看懂了不算会，能在白板上写出来才算。",
          bio="算法竞赛方向，负责社团每周算法小讲堂。",
          skills=["C++", "数据结构", "动态规划", "图论"],
-         exp=[("OpenClaw · 组员", "负责工具调用的边界用例与单元测试。"),
-              ("算法小讲堂", "每周讲一次，从最短路讲到网络流。")],
+         exp=[("OpenClaw · 组员", "负责工具调用的边界用例与单元测试。"), ("算法小讲堂", "每周讲一次，从最短路讲到网络流。")],
          works=["w1"], joined="2025 年秋季",
          qa=[("每周讲什么", "从最短路讲到网络流，每次留一道作业，下周一开讲前对答案。")]),
     dict(id="chenzhiming", name="陈致明", post="成员", tier="成员", college="人工智能学院", major="人工智能", hue=3,
-         dir=["Python", "机器学习"],
-         quote="模型跑出 95% 准确率的时候，我第一反应是：是不是数据漏了。",
-         bio="机器学习方向，负责 Hermes 的记忆压缩与要点提炼。",
-         skills=["PyTorch", "Python", "机器学习", "数学基础"],
-         exp=[("Hermes · 组员", "做要点提炼的评测，对比几种压缩策略的召回损失。")],
-         works=["w5"], joined="2025 年秋季",
-         qa=[("踩过最大的坑", "训练集和测试集没分开，高兴了整整一天才发现。")]),
-    dict(id="yusiyu", name="余思雨", post="成员", tier="成员", college="艺术学院", major="数字媒体艺术", hue=4,
-         dir=["UI 设计", "创意编程"],
-         quote="技术是骨架，审美是皮肤——只有骨架的东西没人愿意摸第二次。",
-         bio="设计 + 创意编程，社团所有海报和官网视觉都出自她手。",
-         skills=["Figma", "视觉设计", "p5.js", "动效"],
-         exp=[("社团视觉", "招新海报改了五版，对外物料统一从这里出。")],
-         works=[], joined="2025 年秋季",
-         qa=[("设计之外", "也在学 shader，想把官网首页做成真正能玩的东西。")]),
+         dir=["后端"],
+         quote="认真对待，谨慎行事。",
+         bio="后端方向，负责社团项目后端部分功能的实现。",
+         skills=["Java", "Python", "Docker"],
+         exp=[("科研智能体 · 组员", "上下文设计，测试上下文摘要是否完整。")],
+         works=["w6"], joined="2026 年",
+         qa=[("为什么加入", "热爱。"), ("给新人的建议", "好好学习。")]),
     dict(id="hehongquan", name="何泓全", post="成员", tier="成员", college="网络空间安全学院", major="网络空间安全", hue=1,
-         dir=["CTF", "逆向"],
-         quote="逆向就是把别人的故事倒着读一遍。",
-         bio="二进制与逆向方向，社团 Writeup 合集的主要贡献者。",
-         skills=["逆向工程", "汇编", "Pwn", "Python"],
-         exp=[("OpenClaw · 组员", "负责沙盒权限收口与异常输入处理。")],
-         works=["w1"], joined="2025 年秋季",
+         dir=["全栈", "Spring", "Redis"],
+         quote="项目维护和开发不能只靠 AI。",
+         bio="前端方向，目前负责科研智能体的页面 UI。",
+         skills=["Java", "Spring", "Python", "Redis", "SQL"],
+         exp=[("科研智能体 · 组员", "前后端与页面 UI。"), ("专利智能体 · 组员", "全链路参与。")],
+         works=["w6", "w3"], joined="2026 年 5 月",
          qa=[("入门建议", "先啃一本《汇编语言》，再刷 50 道 crackme，熬过去就好了。")]),
     dict(id="dingbo", name="丁博", post="成员", tier="成员", college="自动化学院", major="测控技术与仪器", hue=4,
-         dir=["嵌入式", "物联网"],
-         quote="让设备连上网的那一刻，它才真正开始工作。",
-         bio="物联网方向，想把实验室的传感器数据接到社团的平台上。",
-         skills=["C", "单片机", "MQTT", "Python"],
-         exp=[("DeepseekHarness · 组员", "做执行环境的容器化与资源隔离。")],
-         works=["w4"], joined="2026 年春季",
+         dir=["前端"],
+         quote="自己的情绪自己控制",
+         bio="前端方向，负责多个项目的 UI 实现，目前在做 Hermes。",
+         skills=["Python", "Java"],
+         exp=[("AI 小镇", "智能体播报"), ("科研智能体", "参与项目开发")],
+         works=["w6"], joined="2026 年",
          qa=[("最近在做", "一个温湿度采集节点，数据打算接到社团的公开数据接口上。")]),
     dict(id="zhanghongcheng", name="张洪铖", post="成员", tier="成员", college="计算机与软件学院", major="软件工程", hue=1,
-         dir=["前端", "React"],
-         quote="动画不是为了炫，是为了让用户知道“刚才发生了什么”。",
-         bio="前端方向，React + 动效，官网 v3 的主要开发。",
-         skills=["React", "TypeScript", "CSS 动效", "Canvas"],
-         exp=[("DeepseekHarness · 组员", "把 trace 日志做成可回看的界面。"),
-              ("社团官网 v3", "主导前端动效与 38 个页面的详情页模板。")],
-         works=["w4"], joined="2025 年秋季",
+         dir=["后端开发", "Java 后端"],
+         quote="不做 AI 的奴隶，而是 AI 的主人。",
+         bio="后端方向，负责社团多个项目的路由编排与测试。",
+         skills=["Spring", "MySQL", "FastAPI", "Redis"],
+         exp=[("教育智能体 · 组员", "知识库搭建。")],
+         works=["w2"], joined="2025 年秋季",
          qa=[("这次官网做了什么", "深色科技风 + 粒子网络和悬停光束，每个项目都有独立详情页了。")]),
-
 ]
 
 ACTIVITIES = [
@@ -263,7 +274,7 @@ ACTIVITIES = [
                "AI 组最先交卷：RAG 检索链路已经能跑通“提问—召回—带出处回答”，卡点是召回回来的段落经常被截断；后端组把工具注册接口合并进了 OpenClaw 底座，但幂等兜底还没补测试；前端组的详情页骨架搭完了，正等着真实照片替换占位图；项目组把新手任务重出了一遍。",
                "汇报里被提到最多的一个词是“卡在哪”。社长要求每个卡点都必须写清“试过什么、为什么没成”，方便下一个接手的人不用从头踩一遍。散会前他在黑板上留下一句话：下周汇报，必须能当场跑起来，不接受只讲计划。"],
          photos=[("📊", "五组进度表 · A-302", "cv1"), ("🖥️", "当场演示环节", "cv2"), ("📌", "黑板上的下周待办", "cv3")],
-         participants=["yangtianlong", "sunjiale", "chenmingrui", "yuyue", "caiquanyou", "zhengzixin", "zhuyuanmei", "caitong", "chenjiamin", "chenzhiming", "yusiyu", "raoyuxuan", "hehongquan", "qinziyuan", "caikai", "dingbo", "zhanghongcheng", "guoshijun"]),
+         participants=["yangtianlong", "sunjiale", "chenmingrui", "yuyue", "caiquanyou", "zhengzixin", "zhuyuanmei", "caitong", "chenjiamin", "chenzhiming", "raoyuxuan", "hehongquan", "qinziyuan", "caikai", "dingbo", "zhanghongcheng", "guoshijun"]),
     dict(id="a2", date="2026.09.07", weekday="星期一", title="各组自行开会：把学期目标拆成一周能做完的小块",
          tags=["小组会", "分工", "异步协作"], em="🧭", cv="cv2",
          summary="这一周不开全员大会，五个组自己找时间碰——图书馆讨论区、实验室、线上会议室，各开各的。",
@@ -303,7 +314,7 @@ ACTIVITIES = [
                "任务不是“自己找本书看”，每条主线都有必须交出来的东西：RAG 要能跑通一次带出处的问答，向量库要有建库脚本和一套评测集，智能体要有一个能端到端演示的真实场景。负责人、时间节点、检查方式一次写清，避免假期开头热三天就没了下文。",
                "为了不让人掉队，同时定下三条规矩：每周各组自行碰一次，每周日晚线上研读一次论文，开学第二周做一次全员进度汇报。暑期结束时，三条主线都拿出了自己的第一版产物——这也是 9 月 14 日那场汇报会的来处。"],
          photos=[("🚩", "暑期任务清单", "cv2"), ("🧾", "三条主线分工", "cv4"), ("🗓️", "每周节奏安排", "cv1")],
-         participants=["yangtianlong", "sunjiale", "yuyue", "zhuyuanmei", "raoyuxuan", "zhanghongcheng", "qinziyuan", "caitong", "hehongquan", "chenjiamin", "caiquanyou", "zhengzixin", "yusiyu", "caikai", "dingbo", "chenmingrui", "guoshijun"]),
+         participants=["yangtianlong", "sunjiale", "yuyue", "zhuyuanmei", "raoyuxuan", "zhanghongcheng", "qinziyuan", "caitong", "hehongquan", "chenjiamin", "caiquanyou", "zhengzixin", "caikai", "dingbo", "chenmingrui", "guoshijun"]),
 ]
 JOBS = [
     dict(id="j1", title="前端开发方向", org="前端组 · 校内", status="open", status_text="报名中",
@@ -335,7 +346,7 @@ JOBS = [
 TECH = ["TypeScript", "Vue 3", "React", "Node.js", "Go", "Python", "PyTorch", "LLM / RAG",
         "Docker", "MySQL", "Redis", "Nginx", "Canvas", "WebGL", "Git", "Linux", "Figma", "ECharts"]
 
-LIFE_ROWS = ["从需求评审到上线运维", "走完整一遍生产流程", "18 位成员 · 7 个学院", "每周五 19:00 固定组会",
+LIFE_ROWS = ["从需求评审到上线运维", "走完整一遍生产流程", "17 位成员 · 7 个学院", "每周五 19:00 固定组会",
              "自研项目全部开源", "写文档也算交付物", "工科楼 A-302", "2026 秋季招新进行中"]
 life_phrases = LIFE_ROWS
 
@@ -527,11 +538,16 @@ def foot():
 """
 
 def kicker(t):
-    return '<p class="kicker">%s</p>' % esc(t)
+    # 英文与中文用 <br> 拆成两行（左侧索引栏的「lab」样式）
+    return '<p class="kicker">%s</p>' % esc(t).replace(" · ", "<br>", 1)
+
+def sec_num_html(num):
+    # SECTION 编号：数字用 display 字体放大（CSS 里 .sec-num b）
+    return '<span class="sec-num">SECTION <b>%s</b></span>' % esc(num)
 
 def sec_head(k, h, p=None, num=None):
     return f"""<div class="sec-head rv">
-      {('<span class="sec-num">' + esc(num) + '</span>') if num else ''}
+      {sec_num_html(num) if num else ''}
       {kicker(k)}
       <h2>{h}</h2>
       {'<p>%s</p>' % esc(p) if p else ''}
@@ -572,10 +588,12 @@ def build_index():
 
     p.append(f"""
 <header class="hero" id="top">
+  <div class="bg" aria-hidden="true"></div>
+  <div class="mark" aria-hidden="true">象</div>
   <div class="wrap hero-grid">
     <div class="hero-left">
       <span class="pill"><i class="dot-live"></i> 2026 秋季招新 · 进行中</span>
-      <h1>{split_chars('知索不得，|象罔得之。')}</h1>
+      <h1>{split_chars('知索不得，|象罔得之。')}<span class="blink" aria-hidden="true">▍</span></h1>
       <p class="hero-sub">在象罔，从第一个页面、接口或模型开始，把想法做成能真正运行的项目。</p>
       <div class="btn-row">
         <a class="btn btn-p" href="#recruit">我想加入 →</a>
@@ -633,7 +651,7 @@ def build_index():
 <section id="about">
   <div class="wrap">
     <div class="sec-head rv">
-      <span class="sec-num">02</span>
+      <span class="sec-num">SECTION <b>02</b></span>
       {kicker("WHAT WE DO · 我们是谁")}
       <h2>我们的方向</h2><p>象罔，出自《庄子·天地》，借这个名字提醒自己——最好的东西往往不是刷题刷出来的，是在动手折腾的过程中撞见的。</p>
     </div>
@@ -663,7 +681,7 @@ def build_index():
 """)
 
     # 成员
-    qs = [m("chenmingrui"), m("yuyue"), m("yusiyu")]
+    qs = [m("chenmingrui"), m("yuyue")]
     quotes = "".join(f"""
       <div class="beam tilt rv"><div class="beam-in spot qc">
         <span class="qm">"</span>
@@ -772,7 +790,7 @@ def build_projects():
     p.append(f"""
 <section style="padding-top:60px">
   <div class="wrap">
-    {sec_head("PORTFOLIO", '全部作品 <span class="grad">%d 个</span>' % len(WORKS), "每个项目都有独立详情页：完整故事、时间线、参与成员、技术栈与成果数据。")}
+    {sec_head("PORTFOLIO", '全部作品 <span class="grad">%d 个</span>' % len(WORKS), "每个项目都有独立详情页：完整故事、时间线、参与成员、技术栈与成果数据。", "01")}
     <div class="filters">{btns}</div>
     <div class="work-grid">{cards}</div>
   </div>
@@ -802,7 +820,7 @@ def build_members():
     p.append(f"""
 <section style="padding-top:60px">
   <div class="wrap">
-    {sec_head("MEMBERS", '在册成员 <span class="grad">%d 位</span>' % len(MEMBERS), "按社团职位分层：社团负责人 → 技术部四大组长 → 职能部门部长 → 成员。点击任意成员查看详情页：语录、方向、技能、参与的项目。隐私说明：仅展示姓名·学院·专业·职位，其他个人信息一律不上网。")}
+    {sec_head("MEMBERS", '在册成员 <span class="grad">%d 位</span>' % len(MEMBERS), "按社团职位分层：社团负责人 → 技术部四大组长 → 职能部门部长 → 成员。点击任意成员查看详情页：语录、方向、技能、参与的项目。隐私说明：仅展示姓名·学院·专业·职位，其他个人信息一律不上网。", "04")}
     {''.join(groups)}
   </div>
 </section>
@@ -825,7 +843,7 @@ def build_life():
     p.append(f"""
 <section style="padding-top:60px">
   <div class="wrap">
-    {sec_head("CLUB LIFE", '社团动态 <span class="grad">%d 条</span>' % len(ACTIVITIES), "组会、分享会、比赛、上线前夜——社团每周都在发生的事。")}
+    {sec_head("CLUB LIFE", '社团动态 <span class="grad">%d 条</span>' % len(ACTIVITIES), "组会、分享会、比赛、上线前夜——社团每周都在发生的事。", "06")}
     <div class="tl">{items}</div>
   </div>
 </section>
@@ -858,6 +876,17 @@ def build_work(x, prev, nxt):
         <div class="body" style="padding:15px 18px 18px"><span class="cat">{esc(y['cat'])}</span><h3 style="font-size:16px">{esc(y['title'])}</h3></div>
       </div></a>""" for y in others)
     meta = "".join(f"<span>{esc(s)}</span>" for s in [x["cat"], x["status"]] + x["stack"])
+    imgs = x.get("imgs") or []
+    if imgs:
+        cover = ('<div class="d-cover" style="height:auto"><img src="%s" alt="%s" loading="lazy" '
+                 'style="width:100%%;height:auto;display:block"></div>'
+                 % (imgs[0][0], esc(imgs[0][1])))
+        figs = "".join('<figure class="shot"><img src="%s" alt="%s" loading="lazy"><figcaption>%s</figcaption></figure>'
+                       % (src, esc(cap), esc(cap)) for src, cap in imgs)
+        shots = '\n    <h2>平台实拍</h2>\n    <div class="shots rv">%s\n    </div>' % figs
+    else:
+        cover = '<div class="d-cover %s"><span class="em">%s</span></div>' % (x["cv"], x["em"])
+        shots = ""
     return head(f'{x["title"]} · 象罔社团作品') + f"""
 <div class="wrap crumb"><a href="index.html">首页</a> / <a href="projects.html">作品</a> / {esc(x['title'])}</div>
 <section class="d-hero">
@@ -866,14 +895,14 @@ def build_work(x, prev, nxt):
     <h1>{esc(x['title'])}</h1>
     <p class="sub">{esc(x['desc'])}</p>
     <div class="d-meta">{meta}</div>
-    <div class="d-cover {x['cv']}"><span class="em">{x['em']}</span></div>
+    {cover}
   </div>
 </section>
 <div class="wrap d-body">
   <div>
     <h2>背后的故事</h2>
     <p>{esc(x['story'])}</p>
-    <div class="metrics rv">{metrics}</div>
+    <div class="metrics rv">{metrics}</div>{shots}
     <h2>项目时间线</h2>
     <ol class="steps rv">{steps}</ol>
     <div class="card" style="margin-top:6px">
@@ -1461,7 +1490,7 @@ def build_area():
 <section id="codes" style="padding-top:56px">
   <div class="wrap">
     <div class="sec-head" style="margin-bottom:28px">
-      <span class="sec-num">02</span>
+      <span class="sec-num">SECTION <b>02</b></span>
       <p class="kicker">INVITE · 邀请码</p>
       <h2>谁能进来，由这里决定</h2>
       <p>每枚邀请码都记着归属人、可用次数和实际用量。管理员可以现场签发新码。</p>

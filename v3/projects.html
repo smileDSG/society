@@ -35,7 +35,6 @@
       <li><a href="area.html">成员专区</a></li>
     </ul>
     <div class="nav-right">
-      <span class="nav-status"><i></i>2026 秋招进行中</span>
       <div class="nav-auth" id="navAuth"></div>
       <a class="nav-cta" href="index.html#recruit">加入我们 <i>→</i></a>
       <button class="burger" aria-label="菜单">☰</button>
@@ -47,9 +46,9 @@
 <section style="padding-top:60px">
   <div class="wrap">
     <div class="sec-head rv">
-      
+      <span class="sec-num">SECTION <b>01</b></span>
       <p class="kicker">PORTFOLIO</p>
-      <h2>全部作品 <span class="grad">6 个</span></h2>
+      <h2>全部作品 <span class="grad">8 个</span></h2>
       <p>每个项目都有独立详情页：完整故事、时间线、参与成员、技术栈与成果数据。</p>
     </div>
     <div class="filters"><button class="on" data-f="all">全部</button><button class="" data-f="Agent 工程">Agent 工程</button><button class="" data-f="应用智能体">应用智能体</button><button class="" data-f="科研 Harness">科研 Harness</button></div>
@@ -66,12 +65,12 @@
         </div>
       </div></a>
       <a class="beam tilt rv" href="work-w2.html" data-cat="应用智能体"><div class="beam-in wk spot">
-        <div class="cover cv2"><span class="st">开发中</span><span class="em">📚</span></div>
+        <div class="cover cv2"><span class="st">可完整跑通</span><img class="cov-img" src="assets/works/w2-01.png" alt="智眸无界平台实拍：互动课堂界面" loading="lazy"></div>
         <div class="body">
           <span class="cat">应用智能体</span>
-          <h3>教育智能体</h3>
-          <p>面向教学场景的智能体：备课检索、作业批改辅助与答疑，覆盖一门课从准备到答疑的完整链路。</p>
-          <div class="stack"><span>Python</span><span>LLM</span><span>RAG</span><span>PostgreSQL</span><span>Streamlit</span></div>
+          <h3>智眸无界</h3>
+          <p>把一门课交给 AI 教师和 AI 同学，自动生成可互动的课堂、讲义与学习路径：学生说清目标与薄弱点，系统抽 8 维画像，编排 Agent 产出讲义、PPT、题库与代码案例，经核验与安全审核输出带理由的学习路径。</p>
+          <div class="stack"><span>LangGraph</span><span>多智能体</span><span>Zod</span><span>LibreOffice</span><span>知识图谱</span><span>题库引擎</span></div>
           <p style="font-size:13.5px;color:var(--dim);margin:12px 0 0">队长 <b style="color:#fff">孙迦勒</b> · 3 人参与</p>
           <span class="more">查看项目详情 <span>→</span></span>
         </div>
@@ -110,13 +109,35 @@
         </div>
       </div></a>
       <a class="beam tilt rv" href="work-w6.html" data-cat="科研 Harness"><div class="beam-in wk spot">
-        <div class="cover cv6"><span class="st">开发中</span><span class="em">🔬</span></div>
+        <div class="cover cv6"><span class="st">可完整跑通</span><img class="cov-img" src="assets/works/w6-01.png" alt="ARISAI 科研智能体平台实拍" loading="lazy"></div>
         <div class="body">
           <span class="cat">科研 Harness</span>
-          <h3>科研智能体</h3>
-          <p>社团旗舰项目：把科研想法到可投稿论文拆成六个可复跑阶段，每阶段都有产物、有留痕、可回退。</p>
-          <div class="stack"><span>Python</span><span>LLM</span><span>RAG</span><span>Docker</span><span>论文模板</span></div>
-          <p style="font-size:13.5px;color:var(--dim);margin:12px 0 0">队长 <b style="color:#fff">杨添龙</b> · 5 人参与</p>
+          <h3>ARISAI</h3>
+          <p>让研究者用「对话」把一篇论文从选题一路跑到可提交的 PDF：围绕一个科研项目持续对话，系统按意图自动路由到文献 / 实验 / 写作 / 通用子智能体，产物即时落库并实时推送到前端。</p>
+          <div class="stack"><span>Python</span><span>litellm</span><span>Docker</span><span>SSE</span><span>子智能体路由</span><span>论文模板</span><span>GPU 调度</span></div>
+          <p style="font-size:13.5px;color:var(--dim);margin:12px 0 0">队长 <b style="color:#fff">饶宇轩</b> · 5 人参与</p>
+          <span class="more">查看项目详情 <span>→</span></span>
+        </div>
+      </div></a>
+      <a class="beam tilt rv" href="work-w7.html" data-cat="应用智能体"><div class="beam-in wk spot">
+        <div class="cover cv3"><span class="st">已部署运行</span><img class="cov-img" src="assets/works/w7-01.png" alt="法枢 LexHub 平台实拍：合同审查" loading="lazy"></div>
+        <div class="body">
+          <span class="cat">应用智能体</span>
+          <h3>法枢 LexHub</h3>
+          <p>5 个 AI Agent 分工审一份合同，出结构化审查报告与修订建议：条款提取 → 合同画像 → 风险分析 → 修订生成 → 质量审查，人只需要看最后的结构化报告并做专业判断。</p>
+          <div class="stack"><span>FastAPI</span><span>React</span><span>SQLite</span><span>向量库</span><span>Docker</span><span>5-Agent 流水线</span><span>A2A 总线</span></div>
+          <p style="font-size:13.5px;color:var(--dim);margin:12px 0 0">队长 <b style="color:#fff">杨添龙</b> · 1 人参与</p>
+          <span class="more">查看项目详情 <span>→</span></span>
+        </div>
+      </div></a>
+      <a class="beam tilt rv" href="work-w8.html" data-cat="Agent 工程"><div class="beam-in wk spot">
+        <div class="cover cv1"><span class="st">可完整跑通</span><img class="cov-img" src="assets/works/w8-01.png" alt="AFCP 算力调度网关平台实拍" loading="lazy"></div>
+        <div class="body">
+          <span class="cat">Agent 工程</span>
+          <h3>AFCP</h3>
+          <p>把散落各处的 GPU 节点收成一个 OpenAI 兼容出口，自动选最快的那台：业务只按 OpenAI 的格式调一次，选节点、重试、限流、记账由网关负责；多一个节点只是多一行注册。</p>
+          <div class="stack"><span>网关 API</span><span>PostgreSQL</span><span>Redis</span><span>Qdrant</span><span>Vue</span><span>Docker</span><span>语义缓存</span></div>
+          <p style="font-size:13.5px;color:var(--dim);margin:12px 0 0">队长 <b style="color:#fff">杨添龙</b> · 1 人参与</p>
           <span class="more">查看项目详情 <span>→</span></span>
         </div>
       </div></a></div>
