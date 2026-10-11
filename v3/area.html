@@ -78,7 +78,7 @@
     </div>
 
     <div class="locked" id="lockTip">
-      <b>🔒 只读模式</b>
+      <b>只读模式</b>
       <p>你的身份是社团成员，可以查看邀请码的使用情况；签发新码需要管理员权限。</p>
     </div>
 
@@ -122,27 +122,27 @@
   var users = A.users();
   var remote = users.filter(function (u) { return u.u !== s.u; });
   var cards = [
-    { ic: '📅', h: '本周安排', rows: [
-      ['周五 19:00', '全体组会 @ 气象谷2号楼201'],
+    { h: '本周安排', rows: [
+      ['周五 19:00', '全体组会 @ 工科楼 A-302'],
       ['周六 14:00', '技术一组 · 代码评审'],
       ['周日 20:00', '论文研读（线上）']
     ] },
-    { ic: '📁', h: '内部文档', rows: [
+    { h: '内部文档', rows: [
       ['提交规范', '分支命名 / 提交信息 / Code Review 流程'],
       ['模板', '周报模板 · 进度汇报模板'],
       ['归档', '历次组会纪要与决议']
     ] },
-    { ic: '🧭', h: '任务看板', rows: [
+    { h: '任务看板', rows: [
       ['进行中', 'OpenClaw 工具注册层重构'],
       ['待认领', '官网 v3 移动端细节走查'],
       ['已完成', '成员档案页改简历式模块']
     ] },
-    { ic: '👥', h: '其他已注册成员', rows: remote.length
+    { h: '其他已注册成员', rows: remote.length
       ? remote.slice(-6).map(function (u) { return ['@' + u.u, u.name + ' · ' + A.roleLabel(u.role)]; })
       : [['—', '暂时只有你自己，去下面签一枚码拉个人进来']] }
   ];
   $('#cards').innerHTML = cards.map(function (c) {
-    return '<div class="acard"><h3><span>' + c.ic + '</span>' + c.h + '</h3><ul>'
+    return '<div class="acard"><h3>' + c.h + '</h3><ul>'
       + c.rows.map(function (r) {
           return '<li><b>' + A.esc(r[0]) + '</b><span>' + A.esc(r[1]) + '</span></li>';
         }).join('')
@@ -219,7 +219,7 @@
       <a href="life.html">动态</a>
       <a href="index.html#recruit">招新</a>
     </span>
-    <span>© 2026 象罔社团 · 内容占位，上线前替换</span>
+    <span>© 2026 象罔社团</span>
   </div>
 </footer>
 <button id="top-btn" aria-label="回到顶部">↑</button>

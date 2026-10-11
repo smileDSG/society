@@ -320,7 +320,7 @@ JOBS = [
     dict(id="j1", title="前端开发方向", org="前端组 · 校内", status="open", status_text="报名中",
          intro="参与真实产品的前端迭代开发，与设计师、后端工程师协作联调，写的组件会被成千上万的用户用到。",
          duty=["参与真实产品的前端迭代开发", "与设计师、后端工程师协作联调", "编写可复用、可维护的组件"],
-         reqs=["熟悉 HTML / CSS / JavaScript 基础", "了解 Vue 或 React 任一框架", "大二大三优先，每周能投入 3 天以上时间（占位）"],
+         reqs=["熟悉 HTML / CSS / JavaScript 基础", "了解 Vue 或 React 任一框架", "大二大三优先，每周能投入 3 天以上时间"],
          plus=["有自己完整做过并上线的项目", "了解 TypeScript", "对动效 / 交互细节有追求"],
          mentor="zhanghongcheng", team="前端组"),
     dict(id="j2", title="后端开发方向", org="后端组 · 校内", status="open", status_text="报名中",
@@ -359,17 +359,17 @@ BENTO = [
     dict(ic="🎨", t="设计与前端", d="设计与工程一起做决定，拒绝“设计师画图开发照抄”。", cls="", no="06"),
 ]
 
-STATS = [("120", "+", "在册成员"), ("30", "+", "完成项目"), ("15", "", "竞赛奖项"), ("98", "%", "就业 / 升学")]
+# 真实统计（2026-10-11）：成员/项目数直接取自上方 MEMBERS/WORKS，改数据自动同步；奖项与就业率暂无真实数据，不放假数
+STATS = [(str(len(MEMBERS)), "", "在册成员"), (str(len(WORKS)), "", "社团项目"), ("6", "", "培养方向"), ("2026", "", "秋季招新")]
 
 PROCESS = [("09.15 - 09.30", "线上报名", "扫码或通过页面底部 QQ 群提交报名表"),
            ("10.01 - 10.10", "宣讲会 & 面谈", "聊聊你想做什么，而不是你考了多少分（占位）"),
            ("10.11 - 10.20", "新手任务", "一个小作业，看的是热情和潜力，不是现在的水平"),
            ("10.25", "公布名单", "欢迎仪式 & 首次组会，正式加入")]
 
-CONTACT = [("💬", "招新 QQ 群", "123-456-789（占位）"),
-           ("📮", "合作邮箱", "xiangwang@club.edu.cn（占位）"),
-           ("📍", "活动室", "工科楼 A-302（占位）"),
-           ("🐙", "GitHub", "github.com/xiangwang-club（占位）")]
+CONTACT = [("📮", "合作邮箱", "yangtianlong407@gmail.com"),
+           ("📍", "活动室", "气象谷 2 号楼 201"),
+           ("🐙", "GitHub", "github.com/xiangwang-club")]
 
 # ============================================================
 # 工具函数
@@ -505,7 +505,6 @@ def head(title, desc=None, active="", gated=None):
       <li><a href="area.html">成员专区</a></li>
     </ul>
     <div class="nav-right">
-      <span class="nav-status"><i></i>2026 秋招进行中</span>
       <div class="nav-auth" id="navAuth"></div>
       <a class="nav-cta" href="index.html#recruit">加入我们 <i>→</i></a>
       <button class="burger" aria-label="菜单">☰</button>
@@ -528,7 +527,7 @@ def foot():
       <a href="life.html">动态</a>
       <a href="index.html#recruit">招新</a>
     </span>
-    <span>© 2026 象罔社团 · 内容占位，上线前替换</span>
+    <span>© 2026 象罔社团</span>
   </div>
 </footer>
 <button id="top-btn" aria-label="回到顶部">↑</button>
@@ -582,10 +581,6 @@ def build_index():
     ]
     tl = "".join('<div class="ln">%s</div>' % a for a, _ in term_lines)
 
-    stats = "".join(
-        f'<div class="hstat"><b><span data-count="{v}">0</span>{s}</b><span>{esc(l)}</span></div>'
-        for v, s, l in STATS)
-
     p.append(f"""
 <header class="hero" id="top">
   <div class="bg" aria-hidden="true"></div>
@@ -599,7 +594,6 @@ def build_index():
         <a class="btn btn-p" href="#recruit">我想加入 →</a>
         <a class="btn btn-g" href="projects.html">看看我们做过什么</a>
       </div>
-      <div class="hero-stats rv">{stats}</div>
     </div>
     <div class="hero-side" aria-label="交互终端">
       <div class="cliterm" data-term>
@@ -622,7 +616,7 @@ def build_index():
     # 作品（先展示真实交付，作为技术能力的证据）
     cards = "".join(f"""
       <a class="beam tilt rv" href="{work_url(x['id'])}" data-cat="{esc(x['cat'])}"><div class="beam-in wk spot">
-        <div class="cover {x['cv']}"><span class="st">{esc(x['status'])}</span><span class="em">{x['em']}</span></div>
+        <div class="cover {x['cv']}">{'<img class="cov-img" src="%s" alt="" loading="lazy">' % x['imgs'][0][0] if x.get('imgs') else ''}<span class="st">{esc(x['status'])}</span></div>
         <div class="body">
           <span class="cat">{esc(x['cat'])}</span>
           <h3>{esc(x['title'])}</h3>
@@ -644,8 +638,8 @@ def build_index():
     # 方向（Bento）
     bento_parts = []
     for b in BENTO:
-        bento_parts.append('<div class="bt %s rv"><span class="ic">%s</span><h3>%s</h3><p>%s</p><span class="no">%s</span></div>'
-                           % (b["cls"], b["ic"], esc(b["t"]), esc(b["d"]), b["no"]))
+        bento_parts.append('<div class="bt %s rv"><h3>%s</h3><p>%s</p><span class="no">%s</span></div>'
+                           % (b["cls"], esc(b["t"]), esc(b["d"]), b["no"]))
     bento = "".join(bento_parts)
     p.append(f"""
 <section id="about">
@@ -681,13 +675,6 @@ def build_index():
 """)
 
     # 成员
-    qs = [m("chenmingrui"), m("yuyue")]
-    quotes = "".join(f"""
-      <div class="beam tilt rv"><div class="beam-in spot qc">
-        <span class="qm">"</span>
-        <p>{esc(x['quote'])}</p>
-        <a class="who" href="{member_url(x['id'])}">{avatar(x, 'av-sm', 38)}<span><b>{esc(x['name'])}</b><span>{esc(x['college'])} · {esc(x['major'])} · {esc(x['id'])}</span></span></a>
-      </div></div>""" for x in qs)
     roster = "".join(f"""
       <a class="beam tilt rv" href="{member_url(x['id'])}"><div class="beam-in mem spot">
         {avatar(x, 'av', 62)}<b>{esc(x['name'])}</b>
@@ -697,8 +684,7 @@ def build_index():
     p.append(f"""
 <section id="members" style="padding-top:20px">
   <div class="wrap">
-    {sec_head("MEMBERS · 先听听他们说", "成员，18 种来这儿的理由", "隐私说明：本页仅展示姓名·学院·专业·职位，其他个人信息一律不上网。", "04")}
-    <div class="quote-grid">{quotes}</div>
+    {sec_head("MEMBERS · 社团阵容", "现在在这里的人", "隐私说明：本页仅展示姓名·学院·专业·职位，其他个人信息一律不上网。", "04")}
     <div class="mem-grid" style="margin-bottom:34px">{roster}</div>
     <div style="text-align:center"><a class="btn btn-g" href="members.html">查看全部成员 →</a></div>
   </div>
@@ -706,7 +692,6 @@ def build_index():
 """)
 
     # 招新
-    steps = "".join(f'<li><p class="t">{esc(t)}</p><p class="h">{esc(h)}</p><p class="d">{esc(d)}</p></li>' for t, h, d in PROCESS)
     jobs = "".join(f"""
       <div class="beam tilt rv"><div class="beam-in job spot">
         <div class="top"><div><h3>{esc(j['title'])}</h3><p class="org">{esc(j['org'])}</p></div>
@@ -720,14 +705,12 @@ def build_index():
   <div class="wrap">
     {sec_head("JOIN US · 2026 秋季招新", '招新进行中 <span style="color:var(--cy)">●</span>', "面向全校，不限专业、不限年级。", "05")}
     <div class="bento" style="grid-template-columns:1fr 1fr;grid-auto-rows:auto;margin-bottom:40px">
-      <div class="bt rv"><span class="ic">🎯</span><h3>报名要求</h3>
+      <div class="bt rv"><h3>报名要求</h3>
         <ul style="margin-top:10px">{''.join(f'<li style="font-size:14px;color:var(--dim);padding:5px 0">{esc(x)}</li>' for x in ["零基础可入——只要肯学，学长学姐从头带","不限专业——技术面前人人平等","每周至少 4 小时——投入才有产出","一台自己的电脑——配置不限，热爱不限"])}</ul></div>
-      <div class="bt rv"><span class="ic">🎁</span><h3>你将获得</h3>
+      <div class="bt rv"><h3>你将获得</h3>
         <ul style="margin-top:10px">{''.join(f'<li style="font-size:14px;color:var(--dim);padding:5px 0">{esc(x)}</li>' for x in ["真实项目经验——简历不再空白","一路同行的伙伴——和靠谱的人一起做事","内推机会——毕业直通合作企业","开源主页——你的代码会被别人用到"])}</ul></div>
     </div>
     <div class="job-grid">{jobs}</div>
-    <h2 style="margin:54px 0 6px;font-size:22px">招新时间线</h2>
-    <ol class="steps rv">{steps}</ol>
     <div style="text-align:center;margin-top:30px"><a class="btn btn-p" href="#contact">报名 / 联系我们 →</a></div>
   </div>
 </section>
@@ -754,7 +737,7 @@ def build_index():
 """)
 
     # 联系
-    cc = "".join(f'<div class="cc rv"><div class="ic">{e}</div><b>{esc(t)}</b><span>{esc(v)}</span></div>' for e, t, v in CONTACT)
+    cc = "".join(f'<div class="cc rv"><b>{esc(t)}</b><span>{esc(v)}</span></div>' for e, t, v in CONTACT)
     p.append(f"""
 <section id="contact" style="padding-top:20px">
   <div class="wrap">
@@ -777,7 +760,7 @@ def build_projects():
                    for i, c in enumerate(cats))
     cards = "".join(f"""
       <a class="beam tilt rv" href="{work_url(x['id'])}" data-cat="{esc(x['cat'])}"><div class="beam-in wk spot">
-        <div class="cover {x['cv']}"><span class="st">{esc(x['status'])}</span><span class="em">{x['em']}</span></div>
+        <div class="cover {x['cv']}">{'<img class="cov-img" src="%s" alt="" loading="lazy">' % x['imgs'][0][0] if x.get('imgs') else ''}<span class="st">{esc(x['status'])}</span></div>
         <div class="body">
           <span class="cat">{esc(x['cat'])}</span>
           <h3>{esc(x['title'])}</h3>
@@ -872,7 +855,7 @@ def build_work(x, prev, nxt):
     others = [y for y in WORKS if y["id"] != x["id"]][:3]
     rel = "".join(f"""
       <a class="beam tilt" href="{work_url(y['id'])}"><div class="beam-in wk spot">
-        <div class="cover {y['cv']}" style="height:96px"><span class="em" style="font-size:34px">{y['em']}</span></div>
+        <div class="cover {y['cv']}" style="height:96px"></div>
         <div class="body" style="padding:15px 18px 18px"><span class="cat">{esc(y['cat'])}</span><h3 style="font-size:16px">{esc(y['title'])}</h3></div>
       </div></a>""" for y in others)
     meta = "".join(f"<span>{esc(s)}</span>" for s in [x["cat"], x["status"]] + x["stack"])
@@ -885,7 +868,7 @@ def build_work(x, prev, nxt):
                        % (src, esc(cap), esc(cap)) for src, cap in imgs)
         shots = '\n    <h2>平台实拍</h2>\n    <div class="shots rv">%s\n    </div>' % figs
     else:
-        cover = '<div class="d-cover %s"><span class="em">%s</span></div>' % (x["cv"], x["em"])
+        cover = '<div class="d-cover %s"></div>' % x["cv"]
         shots = ""
     return head(f'{x["title"]} · 象罔社团作品') + f"""
 <div class="wrap crumb"><a href="index.html">首页</a> / <a href="projects.html">作品</a> / {esc(x['title'])}</div>
@@ -945,7 +928,7 @@ def build_member(x, prev, nxt):
                  key=lambda i: (role_of(w(i), x["id"]) != "队长", i))
     works = "".join(f"""
       <a href="{work_url(wid)}"><span>{esc(w(wid)['title'])}{role_badge(role_of(w(wid), x['id']))}</span><span class="ar">{esc(w(wid)['cat'])} →</span></a>"""
-                    for wid in _ws) or '<span style="font-size:14px;color:var(--dim-2)">暂无（占位）</span>'
+                    for wid in _ws) or '<span style="font-size:14px;color:var(--dim-2)">暂无</span>'
     lead_cnt = sum(1 for wid in x["works"] if w(wid) and role_of(w(wid), x["id"]) == "队长")
     member_cnt = len([i for i in x["works"] if w(i)]) - lead_cnt
     qa = "".join(f'<div style="margin-bottom:18px"><p style="font-family:var(--mono);font-size:14.5px;color:var(--cy);margin-bottom:5px">Q · {esc(q)}</p><p style="font-size:14.5px;color:var(--dim);line-height:1.85">{esc(a)}</p></div>' for q, a in x["qa"])
@@ -965,18 +948,12 @@ def build_member(x, prev, nxt):
     <h1>{esc(x['name'])}</h1>
     <p class="sub">{esc(x['college'])} · {esc(x['major'])} —— {esc(x['bio'])}</p>
     <div class="d-meta">{tags}<span>{esc(x['joined'])} 加入</span></div>
-    <div class="d-cover cv{((x['hue'] - 1) % 5) + 1}">
-      <div style="position:relative;z-index:3;text-align:center;padding:0 24px">
-        {avatar(x, 'av', 96)}
-        <p style="font-size:19px;margin-top:18px;line-height:1.8;color:#fff;max-width:34em">“{esc(x['quote'])}”</p>
-      </div>
-    </div>
   </div>
 </section>
 <div class="wrap d-body">
   <div>
     <h2>关于 {esc(x['name'])}</h2>
-    <p>{esc(x['bio'])}（占位内容，上线前由本人补充）</p>
+    <p>{esc(x['bio'])}</p>
     <p>方向：<b>{esc(' / '.join(x['dir']))}</b>。{esc(x['joined'])} 加入象罔社团，参与项目 {len(x['works'])} 个。</p>
     <h2>擅长什么</h2>
     <div class="card sk-wrap">{skills}</div>
@@ -1012,7 +989,7 @@ def build_member(x, prev, nxt):
 """ + foot()
 
 def build_activity(a, prev, nxt):
-    photos = "".join(f'<div class="ph {cv}"><span>{em}</span><span class="cap">{esc(cap)}</span></div>' for em, cap, cv in a["photos"])
+    photos = "".join(f'<div class="ph {cv}"><span class="cap">{esc(cap)}</span></div>' for em, cap, cv in a["photos"])
     tags = "".join(f"<span>#{esc(t)}</span>" for t in a["tags"])
     pps = "".join(f'<a href="{member_url(cid)}" title="{esc(m(cid)['name'])}">{avatar(m(cid), 'av', 40)}</a>'
                   for cid in a["participants"] if m(cid))
@@ -1032,7 +1009,7 @@ def build_activity(a, prev, nxt):
     <h1>{esc(a['title'])}</h1>
     <p class="sub">{esc(a['summary'])}</p>
     <div class="d-meta">{tags}</div>
-    <div class="d-cover {a['cv']}"><span class="em">{a['em']}</span></div>
+    <div class="d-cover {a['cv']}"></div>
   </div>
 </section>
 <div class="wrap d-body">
@@ -1041,7 +1018,6 @@ def build_activity(a, prev, nxt):
     {body}
     <h2>现场照片</h2>
     <div class="photo-grid">{photos}</div>
-    <p style="font-family:var(--mono);font-size:14.5px;color:var(--dim-2)">// 占位图，上线前替换为真实照片</p>
     {pager(prev, nxt)}
   </div>
   <aside class="side">
@@ -1049,7 +1025,7 @@ def build_activity(a, prev, nxt):
       <h4>活动信息</h4>
       <div class="spec"><span class="k">日期</span><span class="v">{esc(a['date'])}</span></div>
       <div class="spec"><span class="k">星期</span><span class="v">{esc(a['weekday'])}</span></div>
-      <div class="spec"><span class="k">地点</span><span class="v">工科楼 A-302（占位）</span></div>
+      <div class="spec"><span class="k">地点</span><span class="v">气象谷 2 号楼 201</span></div>
       <div class="spec"><span class="k">标签</span><span class="v">{esc(' / '.join(a['tags']))}</span></div>
     </div>
     <div class="card">
@@ -1080,7 +1056,7 @@ def build_job(j):
       <span class="badge {'b-open' if j['status']=='open' else 'b-soon'}" style="border-radius:999px">{'● ' if j['status']=='open' else '○ '}{esc(j['status_text'])}</span>
       <span>带教：{esc(mentor['name']) if mentor else '待定'}</span>
     </div>
-    <div class="d-cover cv2"><span class="em">💼</span></div>
+    <div class="d-cover cv2"></div>
   </div>
 </section>
 <div class="wrap d-body">
@@ -1091,8 +1067,6 @@ def build_job(j):
     <ul class="steps">{''.join(f'<li><p class="h">{esc(r)}</p></li>' for r in j['reqs'])}</ul>
     <h2>加分项</h2>
     <ul class="steps">{''.join(f'<li><p class="h">{esc(r)}</p></li>' for r in j['plus'])}</ul>
-    <h2>报名流程</h2>
-    <ol class="steps">{''.join(f'<li><p class="t">{esc(t)}</p><p class="h">{esc(h)}</p><p class="d">{esc(d)}</p></li>' for t, h, d in PROCESS)}</ol>
   </div>
   <aside class="side">
     <div class="card">
@@ -1105,7 +1079,6 @@ def build_job(j):
     <div class="card">
       <h4>联系方式</h4>
       <div class="side-links">
-        <a href="index.html#contact"><span>招新 QQ 群</span><span class="ar">123-456-789</span></a>
         <a href="index.html#contact"><span>合作邮箱</span><span class="ar">→</span></a>
       </div>
     </div>
@@ -1170,7 +1143,7 @@ def build_login():
         </div>
         <div class="afield">
           <label>密码</label>
-          <div class="ain" data-for="lp"><i>✦</i><input type="password" id="lp" placeholder="至少 6 位" autocomplete="current-password"><button class="atail" type="button" data-eye="lp">显示</button></div>
+          <div class="ain" data-for="lp"><input type="password" id="lp" placeholder="至少 6 位" autocomplete="current-password"><button class="atail" type="button" data-eye="lp">显示</button></div>
           <p class="aerr" data-err="lp"></p>
         </div>
         <div class="arow">
@@ -1180,7 +1153,6 @@ def build_login():
         <button class="asub" type="submit" id="lsub">登录并进入站点</button>
         <div class="aor"><i></i><span>或者</span><i></i></div>
         <button class="aguest" type="button" id="demoBtn">
-          <span class="gd">🚪</span>
           <span class="gt"><b>用测试账号一键进入</b><small>demo / xw2026 · 管理员 · 仅本机演示可用</small></span>
           <span class="ga">→</span>
         </button>
@@ -1197,7 +1169,7 @@ def build_login():
         <div class="a2col">
           <div class="afield">
             <label>昵称 <u>*</u></label>
-            <div class="ain" data-for="rn"><i>✦</i><input type="text" id="rn" placeholder="社团里怎么称呼你" maxlength="20"></div>
+            <div class="ain" data-for="rn"><input type="text" id="rn" placeholder="社团里怎么称呼你" maxlength="20"></div>
             <p class="aerr" data-err="rn"></p>
           </div>
           <div class="afield">
@@ -1208,14 +1180,14 @@ def build_login():
         </div>
         <div class="afield">
           <label>密码 <u>*</u></label>
-          <div class="ain" data-for="rp"><i>✦</i><input type="password" id="rp" placeholder="至少 6 位，别用纯数字" autocomplete="new-password"><button class="atail" type="button" data-eye="rp">显示</button></div>
+          <div class="ain" data-for="rp"><input type="password" id="rp" placeholder="至少 6 位，别用纯数字" autocomplete="new-password"><button class="atail" type="button" data-eye="rp">显示</button></div>
           <div class="strength" id="str" data-lv="0"><i></i><i></i><i></i><i></i></div>
           <p class="strength-txt" id="strTxt">密码强度 —</p>
           <p class="aerr" data-err="rp"></p>
         </div>
         <div class="afield">
           <label>确认密码 <u>*</u></label>
-          <div class="ain" data-for="rp2"><i>✦</i><input type="password" id="rp2" placeholder="再输一遍" autocomplete="new-password"></div>
+          <div class="ain" data-for="rp2"><input type="password" id="rp2" placeholder="再输一遍" autocomplete="new-password"></div>
           <p class="aerr" data-err="rp2"></p>
         </div>
         <div class="arow" style="margin-bottom:20px">
@@ -1509,7 +1481,7 @@ def build_area():
     </div>
 
     <div class="locked" id="lockTip">
-      <b>🔒 只读模式</b>
+      <b>只读模式</b>
       <p>你的身份是社团成员，可以查看邀请码的使用情况；签发新码需要管理员权限。</p>
     </div>
 
@@ -1553,27 +1525,27 @@ def build_area():
   var users = A.users();
   var remote = users.filter(function (u) { return u.u !== s.u; });
   var cards = [
-    { ic: '📅', h: '本周安排', rows: [
+    { h: '本周安排', rows: [
       ['周五 19:00', '全体组会 @ 工科楼 A-302'],
       ['周六 14:00', '技术一组 · 代码评审'],
       ['周日 20:00', '论文研读（线上）']
     ] },
-    { ic: '📁', h: '内部文档', rows: [
+    { h: '内部文档', rows: [
       ['提交规范', '分支命名 / 提交信息 / Code Review 流程'],
       ['模板', '周报模板 · 进度汇报模板'],
       ['归档', '历次组会纪要与决议']
     ] },
-    { ic: '🧭', h: '任务看板', rows: [
+    { h: '任务看板', rows: [
       ['进行中', 'OpenClaw 工具注册层重构'],
       ['待认领', '官网 v3 移动端细节走查'],
       ['已完成', '成员档案页改简历式模块']
     ] },
-    { ic: '👥', h: '其他已注册成员', rows: remote.length
+    { h: '其他已注册成员', rows: remote.length
       ? remote.slice(-6).map(function (u) { return ['@' + u.u, u.name + ' · ' + A.roleLabel(u.role)]; })
       : [['—', '暂时只有你自己，去下面签一枚码拉个人进来']] }
   ];
   $('#cards').innerHTML = cards.map(function (c) {
-    return '<div class="acard"><h3><span>' + c.ic + '</span>' + c.h + '</h3><ul>'
+    return '<div class="acard"><h3>' + c.h + '</h3><ul>'
       + c.rows.map(function (r) {
           return '<li><b>' + A.esc(r[0]) + '</b><span>' + A.esc(r[1]) + '</span></li>';
         }).join('')
