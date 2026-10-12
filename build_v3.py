@@ -39,7 +39,7 @@ WORKS = [
                    ("2026.08", "工具注册", "把业务 API 包成统一 tool，超时与幂等兜底进底座。"),
                    ("2026.09", "沙盒安全", "执行环境隔离 + 权限收口，前端风格统一同步完成。")],
          contributors=["caitong", "hehongquan", "chenjiamin", "caiquanyou"], lead="caitong",
-         links=[("GitHub 仓库", "#"), ("内部文档", "#")]),
+         links=[("内部文档", "#")]),
     dict(id="w2", title="智眸无界", cat="应用智能体", em="📚", cv="cv2", status="可完整跑通",
          stack=["LangGraph", "多智能体", "Zod", "LibreOffice", "知识图谱", "题库引擎"],
          desc="把一门课交给 AI 教师和 AI 同学，自动生成可互动的课堂、讲义与学习路径：学生说清目标与薄弱点，系统抽 8 维画像，编排 Agent 产出讲义、PPT、题库与代码案例，经核验与安全审核输出带理由的学习路径。",
@@ -49,7 +49,7 @@ WORKS = [
                    ("2026.08", "多智能体链路", "知识库 + 题库 + 图谱接成链路，Director 编排产出讲义 / PPT / 题库。"),
                    ("2026.10", "可完整跑通", "v0.2.1：主页一句话生成整堂课，单测 242 / 242 通过。")],
          contributors=["sunjiale", "chenmingrui", "guoshijun"], lead="sunjiale",
-         links=[("GitHub 仓库", "#"), ("使用文档", "#")],
+         links=[("使用文档", "#")],
          imgs=[("assets/works/w2-01.png", "互动课堂：播放 AI 生成的课，左侧 AI 教师「星野老师」旁白，中间板书与表格，可暂停回看"),
                ("assets/works/w2-02.png", "个性化资料生成：说清目标与薄弱点，系统抽 8 维学习画像，即可生成个性化资料"),
                ("assets/works/w2-03.png", "学习情况总览：一屏呈现知识掌握、连续打卡、学习时长与正确率，并给出进阶路径"),
@@ -63,7 +63,7 @@ WORKS = [
                    ("2026.09", "检索主功能", "标题命中 + 详情抓取链路打通。"),
                    ("2026.10", "结构化扩展", "引入权利要求与引用关系的结构化抽取。")],
          contributors=["caikai", "yuyue", "zhengzixin"], lead="caikai",
-         links=[("GitHub 仓库", "#"), ("技术博客", "#")]),
+         links=[("技术博客", "#")]),
     dict(id="w4", title="DeepseekHarness", cat="Agent 工程", em="🧩", cv="cv4", status="开发中",
          stack=["Python", "LangGraph", "Docker", "pytest", "OpenTelemetry"],
          desc="智能体编排框架：把一次长任务拆成可控的状态机——跑得到断点、续得上进度、看得见每一步。",
@@ -73,7 +73,7 @@ WORKS = [
                    ("2026.09", "可观测", "引入 trace，每一步的输入输出都能回看。"),
                    ("2026.10", "收敛验证", "长任务的收敛闭环做压测与复验。")],
          contributors=["qinziyuan", "zhanghongcheng", "dingbo"], lead="qinziyuan",
-         links=[("GitHub 仓库", "#"), ("设计文档", "#")]),
+         links=[("设计文档", "#")]),
     dict(id="w5", title="Hermes", cat="Agent 工程", em="🪶", cv="cv5", status="开发中",
          stack=["Python", "向量检索", "SQLite", "Redis", "Prompt 工程"],
          desc="上下文与提示词记忆工程：让智能体跨回合记得住前一晚说到哪，而不是每次醒来重新自我介绍。",
@@ -83,7 +83,7 @@ WORKS = [
                    ("2026.09", "压缩策略", "超长上下文按要点压缩，避免无脑堆叠。"),
                    ("2026.10", "工程化", "跨会话恢复 + 缓存，成本与延迟同步下降。")],
          contributors=["raoyuxuan", "zhuyuanmei", "chenzhiming"], lead="raoyuxuan",
-         links=[("GitHub 仓库", "#"), ("技术博客", "#")]),
+         links=[("技术博客", "#")]),
     dict(id="w6", title="ARISAI", cat="科研 Harness", em="🔬", cv="cv6", status="可完整跑通",
          stack=["Python", "litellm", "Docker", "SSE", "子智能体路由", "论文模板", "GPU 调度"],
          desc="让研究者用「对话」把一篇论文从选题一路跑到可提交的 PDF：围绕一个科研项目持续对话，系统按意图自动路由到文献 / 实验 / 写作 / 通用子智能体，产物即时落库并实时推送到前端。",
@@ -93,7 +93,7 @@ WORKS = [
                    ("2026.09", "全链路跑通", "从零到 PDF 真机验收，连续自主运行 10+ 轮、直接产出可编译 PDF。"),
                    ("2026.10", "多源检索 + 审核", "文献多源检索入库，出稿前过 11 维度期刊级审核。")],
          contributors=["yangtianlong", "raoyuxuan", "qinziyuan", "sunjiale", "caikai"], lead="raoyuxuan",
-         links=[("GitHub 仓库", "#"), ("流程指南", "#")],
+         links=[("流程指南", "#")],
          imgs=[("assets/works/w6-01.png", "项目总览：39 个科研项目、运行中状态、最近实验一屏可见"),
                ("assets/works/w6-02.png", "对话页：智能体自主执行一个「目标轮」，带思考过程与工具调用，右侧是实时产物树"),
                ("assets/works/w6-03.png", "实验看板：单次实验的真实运行日志、指标（FPR/TPR）、数据卡片条与自动生成的论文图"),
@@ -107,7 +107,7 @@ WORKS = [
                    ("流水线", "5 Agent 流转", "extraction / reader / analysis / revision / review 各司其职，Review 与 Revision 双向协商。"),
                    ("质检", "零 LLM 消耗", "Supervisor 规则化质量评估与路由，单次审查成本可控。")],
          contributors=["yangtianlong"], lead="yangtianlong",
-         links=[("GitHub 仓库", "#"), ("使用文档", "#")],
+         links=[("使用文档", "#")],
          imgs=[("assets/works/w7-01.png", "5-Agent 审查流水线：真实合同《解除劳动合同协议（有纠纷解除范本）》已完成五个阶段，右侧列出识别出的 3 条高风险条款及说明"),
                ("assets/works/w7-02.png", "任务历史：22 条真实审查任务（已完成 / 失败、耗时、进度），覆盖劳动、数据、采购等多类合同"),
                ("assets/works/w7-03.png", "报告中心：258 份审查报告 + 109 份修订文档，Markdown / JSON 双格式，可打开与导出")]),
@@ -120,7 +120,7 @@ WORKS = [
                    ("路由", "多策略调度", "加权延迟 / 模型亲和 / 轮询，改 config 热重载即生效，不重启服务。"),
                    ("可运营", "三层可观测", "Prometheus + Grafana + Loki，Vue 管理台 + Docker Compose 一键部署。")],
          contributors=["yangtianlong"], lead="yangtianlong",
-         links=[("GitHub 仓库", "#"), ("使用文档", "#")],
+         links=[("使用文档", "#")],
          imgs=[("assets/works/w8-01.png", "管理台总览：累计 1957 次推理请求、语义缓存命中率 22%，熔断器面板显示当前无节点熔断"),
                ("assets/works/w8-02.png", "算力节点：「+添加节点」把推理节点登记进来，实时显示健康状态、延迟与启停"),
                ("assets/works/w8-03.png", "路由决策日志：每次请求「候选节点 → 选中节点 → 决策原因」全程可回查"),
@@ -368,8 +368,7 @@ PROCESS = [("09.15 - 09.30", "线上报名", "扫码或通过页面底部 QQ 群
            ("10.25", "公布名单", "欢迎仪式 & 首次组会，正式加入")]
 
 CONTACT = [("📮", "合作邮箱", "yangtianlong407@gmail.com"),
-           ("📍", "活动室", "气象谷 2 号楼 201"),
-           ("🐙", "GitHub", "github.com/xiangwang-club")]
+           ("📍", "活动室", "气象谷 2 号楼 201")]
 
 # ============================================================
 # 工具函数
