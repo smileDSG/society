@@ -9,10 +9,17 @@
 #   http://<IP>:8085/<密钥>/login.html   真实登录页
 #
 # 用法（在服务器上，root 身份执行）：
-#   bash /opt/xiangwang/deploy/setup-mask.sh        # 会先问一句再动
-#   bash /opt/xiangwang/deploy/setup-mask.sh -y     # 不问，直接干
-#   bash /opt/xiangwang/deploy/setup-mask.sh -r     # 换一把新密钥（旧链接立即失效）
-#   bash /opt/xiangwang/deploy/setup-mask.sh -h     # 看这段说明
+#   bash /opt/xiangwang/deploy/setup-mask.sh              # 会先问一句再动
+#   bash /opt/xiangwang/deploy/setup-mask.sh -y           # 不问，直接干
+#   bash /opt/xiangwang/deploy/setup-mask.sh -r           # 换一把新密钥（旧链接立即失效）
+#   bash /opt/xiangwang/deploy/setup-mask.sh -s k7m2p9qv  # 自己指定一个短密钥
+#   bash /opt/xiangwang/deploy/setup-mask.sh -h           # 看这段说明
+#
+# 密钥默认是一串 8 位随机字符，例如 k7m2p9qv。
+#   够短 —— 能在群里打字发、能口述；
+#   也够难猜 —— 从「不含 0/O/1/l/I」的 32 个字符里取，32^8 ≈ 1.1 万亿种组合，
+#   字典猜不中，穷举也不现实。
+#   想再短不拦着，但别用成短的英文单词（friend/team/club 这种一猜就中）。
 #
 # 可以重复执行：密钥不会变，容器会重建一次（约 1 秒不可用）。
 # 重建前会在 /etc/xiangwang/rollback.sh 留下退回脚本。
@@ -38,12 +45,15 @@ DEFAULT_PORT="8085"
 
 ASSUME_YES=""
 REGEN=""
-for a in "$@"; do
-    case "$a" in
+CUSTOM=""
+while [ $# -gt 0 ]; do
+    case "$1" in
         -y|--yes)        ASSUME_YES=1 ;;
         -r|--regenerate) REGEN=1 ;;
-        -h|--help)       sed -n '2,30p' "$0"; exit 0 ;;
+        -s|--secret)     CUSTOM="${2:-}"; shift ;;
+        -h|--help)       sed -n '2,34p' "$0"; exit 0 ;;
     esac
+    shift
 done
 
 say()  { printf '%s\n' "$*"; }
@@ -90,35 +100,48 @@ fi
 # ---------------------------------------------------------------
 step "2/7" "确定隐秘目录名"
 
+# 8 位随机字符。字符集刻意剔掉 0/O/1/l/I —— 免得在群里口述时听错、
+# 手打时看错。32 个字符取 8 位 ≈ 1.1 万亿种组合，猜不中。
 gen_secret() {
-    if command -v openssl >/dev/null 2>&1; then
-        openssl rand -hex 12
-    else
-        head -c 24 /dev/urandom | od -An -tx1 | tr -d ' \n' | cut -c1-24
-    fi
+    head -c 2048 /dev/urandom 2>/dev/null | tr -dc 'a-hjkmnp-z2-9' | head -c 8
 }
 
 mkdir -p "$CONF_DIR" || die "建不了 $CONF_DIR"
 chmod 700 "$CONF_DIR"
 
 NEW=""
-if [ -n "$REGEN" ]; then
+if [ -n "$CUSTOM" ]; then
+    NEW=1
+elif [ -n "$REGEN" ]; then
     NEW=1
 elif [ ! -s "$SECRET_FILE" ]; then
     NEW=1
 fi
 
 if [ -n "$NEW" ]; then
-    SECRET="$(gen_secret)"
-    [ -n "$SECRET" ] || die "生成密钥失败"
+    if [ -n "$CUSTOM" ]; then
+        SECRET="$CUSTOM"
+        [ "${#SECRET}" -ge 6 ] || die "自定的密钥太短了，至少 6 位（建议 8 位）"
+        case "$SECRET" in
+            */*|*..*|.*|*[!A-Za-z0-9_-]*) die "自定的密钥含非法字符（只允许字母、数字、- _，不能含 / 和 ..）" ;;
+        esac
+        case "$SECRET" in
+            [Ff]riend|[Tt]eam|[Cc]lub|[Rr]eal|[Ii]n|[Gg]o|[Ll]ogin|[Aa]dmin|[Hh]idden|[Ss]ecret|[Xx][Ww])
+                warn "你自定的「$SECRET」很像常用词，被猜中的概率不低。" ;;
+        esac
+        ok "已按你指定的值设置密钥"
+    else
+        SECRET="$(gen_secret)"
+        [ -n "$SECRET" ] || die "生成密钥失败"
+        if [ -n "$REGEN" ]; then
+            ok "已换新密钥（旧链接从现在起全部失效）"
+        else
+            ok "已生成密钥"
+        fi
+    fi
     umask 077
     printf '%s\n' "$SECRET" > "$SECRET_FILE" || die "写不了 $SECRET_FILE"
     chmod 600 "$SECRET_FILE"
-    if [ -n "$REGEN" ]; then
-        ok "已换新密钥（旧链接从现在起全部失效）"
-    else
-        ok "已生成密钥"
-    fi
 else
     ok "沿用现有密钥（没变）"
 fi
