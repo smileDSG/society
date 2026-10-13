@@ -467,6 +467,32 @@ bash /opt/xiangwang/deploy/setup-mask.sh
 - 忘了密钥：`cat /etc/xiangwang/entry-path.txt`
 - 以后推代码照旧。`autopull.sh` 末尾已接上 `publish.sh`，每 5 分钟自动拉取并重铺对外目录
 
+### （可选）再加一个 Cloudflare HTTPS 入口
+
+站点原本只有 `http://IP:8085`。想多一个免域名、免备案的 HTTPS 地址，用 Cloudflare 快速隧道：
+
+```bash
+bash /opt/xiangwang/deploy/setup-tunnel.sh          # 已建过就直接报当前地址
+bash /opt/xiangwang/deploy/setup-tunnel.sh -f       # 重建（会换新地址）
+```
+
+它跑一个 `cloudflare/cloudflared` 容器指向 `127.0.0.1:8085`，因此掩盖层在 HTTPS 上同样成立：
+
+| 访问 | 结果 |
+|---|---|
+| `https://<随机域名>.trycloudflare.com/` | 伪装站 |
+| `https://<随机域名>.trycloudflare.com/<密钥>/` | 真实站 |
+
+**三个必须知道的限制**：
+
+1. **地址不固定。** 每次 cloudflared 重启（服务器重启、容器重启、隧道重连）都会换一个新的随机域名。查当前地址：
+   `docker logs xw-tunnel 2>&1 | grep -oE 'https://[a-z0-9-]*\.trycloudflare\.com' | tail -1`
+   想要固定地址只能上「命名隧道 + 自己的域名」，需要 Cloudflare 账号和一个域名。
+2. **它是公开地址**，比 `IP:端口` 更好记也更好转发——转发一次，掩盖层就白做了一半。
+3. **登录态不互通。** 浏览器按「协议+域名+端口」隔离 `localStorage`，在 `IP:8085` 登录过的人，走 HTTPS 地址要再登一次。
+
+> 隧道**不要**直接指向 `/<密钥>/`，那等于把 HTTPS 地址本身变成真实站的大门。
+
 ### ⚠️ 这层掩盖挡不住什么
 
 它挡的是**扫描器、爬虫、撞库脚本和好奇的人**。挡不住：
