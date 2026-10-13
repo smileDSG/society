@@ -63,10 +63,7 @@
     </div>
     <h2>项目时间线</h2>
     <ol class="steps rv"><li><p class="t">v1.0.0</p><p class="h">已部署运行</p><p class="d">Docker 全栈上线，本地实例累计 258 份审查报告、109 份修订文档。</p></li><li><p class="t">流水线</p><p class="h">5 Agent 流转</p><p class="d">extraction / reader / analysis / revision / review 各司其职，Review 与 Revision 双向协商。</p></li><li><p class="t">质检</p><p class="h">零 LLM 消耗</p><p class="d">Supervisor 规则化质量评估与路由，单次审查成本可控。</p></li></ol>
-    <div class="card" style="margin-top:6px">
-      <h4>我们学到了什么</h4>
-      <ul><li style="font-size:14px;color:var(--dim);padding:7px 0 7px 18px;position:relative"><span style="position:absolute;left:0;color:var(--cy)">▸</span>生产环境和本地跑通是两件事</li><li style="font-size:14px;color:var(--dim);padding:7px 0 7px 18px;position:relative"><span style="position:absolute;left:0;color:var(--cy)">▸</span>上线前一定要有监控和回滚方案</li><li style="font-size:14px;color:var(--dim);padding:7px 0 7px 18px;position:relative"><span style="position:absolute;left:0;color:var(--cy)">▸</span>文档写给自己看的，也写给下一届看的</li></ul>
-    </div>
+    <div class="card" style="margin-top:6px"><h4>已知局限</h4><ul><li style="font-size:14px;color:var(--dim);padding:7px 0 7px 18px;position:relative"><span style="position:absolute;left:0;color:var(--cy)">▸</span>Agent 目前串行执行（非并发），单次审查耗时较长。</li><li style="font-size:14px;color:var(--dim);padding:7px 0 7px 18px;position:relative"><span style="position:absolute;left:0;color:var(--cy)">▸</span>证据粒度到条款级，尚未细化到子句 / 句子级。</li><li style="font-size:14px;color:var(--dim);padding:7px 0 7px 18px;position:relative"><span style="position:absolute;left:0;color:var(--cy)">▸</span>修订建议仍偏模板化，复杂法律判断需人工复核。</li></ul></div>
     <div class="pager"><a href="work-w6.html"><span class="lb">← PREV</span>ARISAI</a><a class="r" href="work-w8.html"><span class="lb">NEXT →</span>AFCP</a></div>
   </div>
   <aside class="side">
@@ -110,7 +107,7 @@
 </main>
 <footer>
   <div class="foot-in">
-    <span class="motto">// 象罔得之 —— 无心而求，反而得之</span>
+    <span class="motto">象罔得之 —— 无心而求，反而得之</span>
     <span class="foot-links">
       <a href="index.html">首页</a>
       <a href="projects.html">作品</a>

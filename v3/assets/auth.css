@@ -487,3 +487,30 @@ html.gated body { opacity: 0; }
 @media(max-width:1100px){
   .auth-mark{font-size:110px;top:-14px;left:-10px}
 }
+
+/* ============================================================
+ * 手册定稿叠加层 · 第二轮（2026-10-12）：补齐遗漏的紫与辉光
+ * 规则：青 #56d2ff 仅精确高亮；禁止紫(#c4b5fd/#a5b4fc/#8b5cf6)、
+ * 禁止辉光(box-shadow 外发光)、禁止扫光动画、禁止背景渐变文字。
+ * ============================================================ */
+/* 品牌标题强调：青→紫渐变改为精确青色平面 */
+.auth-brand h1 em,
+.area-head h1 em{
+  background:none;-webkit-background-clip:initial;background-clip:initial;color:var(--cy);
+}
+/* 提交按钮：实心青，去紫渐变、去辉光、去扫光 */
+.asub{background:var(--cy);color:#04121f;box-shadow:none;background-image:none!important}
+.asub:hover{transform:none;box-shadow:none;background:#7ddcff}
+.asub::after{display:none!important}
+/* 测试账号按钮：平面虚线青，去紫渐变与辉光 */
+.aguest{border:1px dashed var(--line-2);background:transparent;color:var(--txt);box-shadow:none!important}
+.aguest:hover{border-color:var(--cy);background:rgba(86,210,255,.08);box-shadow:none!important;transform:none}
+.aguest .gt small{color:var(--dim-2)}
+/* 成员专区签发按钮：同提交按钮 */
+.issue-form button{background:var(--cy);color:#04121f;box-shadow:none;background-image:none!important}
+.issue-form button:hover{transform:none;box-shadow:none;background:#7ddcff}
+/* 勾选框对勾：青色平面，去紫渐变 */
+.acheck input:checked + u{background:var(--cy);border-color:transparent;color:#04121f}
+/* 导航登录胶囊小方块 / 头像：去辉光，平面青 */
+.nav-login::before{background:var(--cy);box-shadow:none}
+.nu-av{background:var(--cy);color:#04121f}

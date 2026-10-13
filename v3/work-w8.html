@@ -63,11 +63,8 @@
     </div>
     <h2>项目时间线</h2>
     <ol class="steps rv"><li><p class="t">v1.0.0</p><p class="h">可完整跑通</p><p class="d">本地拉起全栈，注册 mock 节点后打通注册 → 选点 → 转发 → 日志 → 缓存整条链路。</p></li><li><p class="t">路由</p><p class="h">多策略调度</p><p class="d">加权延迟 / 模型亲和 / 轮询，改 config 热重载即生效，不重启服务。</p></li><li><p class="t">可运营</p><p class="h">三层可观测</p><p class="d">Prometheus + Grafana + Loki，Vue 管理台 + Docker Compose 一键部署。</p></li></ol>
-    <div class="card" style="margin-top:6px">
-      <h4>我们学到了什么</h4>
-      <ul><li style="font-size:14px;color:var(--dim);padding:7px 0 7px 18px;position:relative"><span style="position:absolute;left:0;color:var(--cy)">▸</span>生产环境和本地跑通是两件事</li><li style="font-size:14px;color:var(--dim);padding:7px 0 7px 18px;position:relative"><span style="position:absolute;left:0;color:var(--cy)">▸</span>上线前一定要有监控和回滚方案</li><li style="font-size:14px;color:var(--dim);padding:7px 0 7px 18px;position:relative"><span style="position:absolute;left:0;color:var(--cy)">▸</span>文档写给自己看的，也写给下一届看的</li></ul>
-    </div>
-    <div class="pager"><a href="work-w7.html"><span class="lb">← PREV</span>法枢 LexHub</a><span></span></div>
+    <div class="card" style="margin-top:6px"><h4>已知局限</h4><ul><li style="font-size:14px;color:var(--dim);padding:7px 0 7px 18px;position:relative"><span style="position:absolute;left:0;color:var(--cy)">▸</span>当前是确定性的调度网关：对话式入口、场景感知自适应策略、自动扩缩容与自愈仍在《算力智能体计划书》阶段，尚未实现。</li><li style="font-size:14px;color:var(--dim);padding:7px 0 7px 18px;position:relative"><span style="position:absolute;left:0;color:var(--cy)">▸</span>语义缓存依赖嵌入模型质量，阈值需按场景调，阈值过低会误命中。</li></ul></div>
+    <div class="pager"><a href="work-w7.html"><span class="lb">← PREV</span>法枢 LexHub</a><a class="r" href="work-w9.html"><span class="lb">NEXT →</span>简报智能体</a></div>
   </div>
   <aside class="side">
     <div class="card">
@@ -110,7 +107,7 @@
 </main>
 <footer>
   <div class="foot-in">
-    <span class="motto">// 象罔得之 —— 无心而求，反而得之</span>
+    <span class="motto">象罔得之 —— 无心而求，反而得之</span>
     <span class="foot-links">
       <a href="index.html">首页</a>
       <a href="projects.html">作品</a>

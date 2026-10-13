@@ -53,7 +53,9 @@ WORKS = [
          imgs=[("assets/works/w2-01.png", "互动课堂：播放 AI 生成的课，左侧 AI 教师「星野老师」旁白，中间板书与表格，可暂停回看"),
                ("assets/works/w2-02.png", "个性化资料生成：说清目标与薄弱点，系统抽 8 维学习画像，即可生成个性化资料"),
                ("assets/works/w2-03.png", "学习情况总览：一屏呈现知识掌握、连续打卡、学习时长与正确率，并给出进阶路径"),
-               ("assets/works/w2-04.png", "解题闭环：一道空间向量题的分步骤解答，可一键加入错题本，用于后续复习与画像更新")]),
+               ("assets/works/w2-04.png", "解题闭环：一道空间向量题的分步骤解答，可一键加入错题本，用于后续复习与画像更新")],
+         limits=["动画算法覆盖 9 个，计数 / 桶 / 基数 / 希尔与线性查找未实现；树形布局在非满二叉树上父节点会偏移。",
+            "幻灯片预览图依赖 LibreOffice headless，字体回退与复杂文本框填充在部分环境待验证。"]),
     dict(id="w3", title="专利智能体", cat="应用智能体", em="🔍", cv="cv3", status="开发中",
          stack=["Python", "OpenAlex", "LLM", "Embedding", "FastAPI"],
          desc="专利与文献检索智能体：找得到标题，也要把摘要、权利要求与引用关系一次拿全。",
@@ -110,7 +112,10 @@ WORKS = [
          links=[("使用文档", "#")],
          imgs=[("assets/works/w7-01.png", "5-Agent 审查流水线：真实合同《解除劳动合同协议（有纠纷解除范本）》已完成五个阶段，右侧列出识别出的 3 条高风险条款及说明"),
                ("assets/works/w7-02.png", "任务历史：22 条真实审查任务（已完成 / 失败、耗时、进度），覆盖劳动、数据、采购等多类合同"),
-               ("assets/works/w7-03.png", "报告中心：258 份审查报告 + 109 份修订文档，Markdown / JSON 双格式，可打开与导出")]),
+               ("assets/works/w7-03.png", "报告中心：258 份审查报告 + 109 份修订文档，Markdown / JSON 双格式，可打开与导出")],
+         limits=["Agent 目前串行执行（非并发），单次审查耗时较长。",
+            "证据粒度到条款级，尚未细化到子句 / 句子级。",
+            "修订建议仍偏模板化，复杂法律判断需人工复核。"]),
     dict(id="w8", title="AFCP", cat="Agent 工程", em="🖥️", cv="cv1", status="可完整跑通",
          stack=["网关 API", "PostgreSQL", "Redis", "Qdrant", "Vue", "Docker", "语义缓存"],
          desc="把散落各处的 GPU 节点收成一个 OpenAI 兼容出口，自动选最快的那台：业务只按 OpenAI 的格式调一次，选节点、重试、限流、记账由网关负责；多一个节点只是多一行注册。",
@@ -124,7 +129,27 @@ WORKS = [
          imgs=[("assets/works/w8-01.png", "管理台总览：累计 1957 次推理请求、语义缓存命中率 22%，熔断器面板显示当前无节点熔断"),
                ("assets/works/w8-02.png", "算力节点：「+添加节点」把推理节点登记进来，实时显示健康状态、延迟与启停"),
                ("assets/works/w8-03.png", "路由决策日志：每次请求「候选节点 → 选中节点 → 决策原因」全程可回查"),
-               ("assets/works/w8-04.png", "模型注册表：4 个模型分别挂到不同后端（openai / vllm）与节点，标注 GPU 型号、最大上下文与启停状态")]),
+               ("assets/works/w8-04.png", "模型注册表：4 个模型分别挂到不同后端（openai / vllm）与节点，标注 GPU 型号、最大上下文与启停状态")],
+         limits=["当前是确定性的调度网关：对话式入口、场景感知自适应策略、自动扩缩容与自愈仍在《算力智能体计划书》阶段，尚未实现。",
+            "语义缓存依赖嵌入模型质量，阈值需按场景调，阈值过低会误命中。"]),
+    dict(id="w9", title="简报智能体", cat="应用智能体", em="📰", cv="cv5", status="可完整跑通",
+         stack=["微信小程序", "FastAPI", "LLM", "RSS 抓取", "FFmpeg", "Edge-TTS"],
+         desc="把自己关心的领域写成一句话，每天早晚收到一份 AI 资讯简报：早晚报按 14 个标签分区由 LLM 生成，专属简报写下兴趣 30–60 秒现抓现生成，还能把同一批新闻素材做成视频早报。",
+         metrics=[("23", "个", "RSS 源"), ("14", "个", "标签分区"), ("5", "个", "小程序 Tab"), ("30-60", "s", "专属简报出稿")],
+         story="AI 圈一天几百条更新，散在几十个源里——公众号、GitHub Trending、Hacker News、二十多个 RSS，想跟住又不值得天天刷十几个站。更麻烦的是「我看的」和「别人看的」不是一回事：做芯片的、看投融资的、打电竞的，关心的完全不是同一批新闻，通用榜单永远有一半是噪音。这个小程序把入口收成一个：每天早晚各一份按 14 个标签分好区的简报，打开就能看；想更偏一点，就在「专属简报」里写一句自己的兴趣（比如「医疗 AI、芯片、电子竞技」），系统去全网现抓现生成——不用先选标签，也不用等第二天。",
+         timeline=[("v1.0.0", "可完整跑通", "本地起全栈 + 小程序真机：今日简报 / 专属简报 / 历史 / 视频 / 我的 5 个 Tab 全部跑通，早晚报由调度每日自动生成。"),
+                   ("抓取", "多源聚合", "接 GitHub Trending、Hacker News 与 23 个 RSS 源，并按关键词走 Bing / Google News 检索，引擎逐个回退、失败自动降级。"),
+                   ("视频", "新闻成片", "输入关键词触发，抓素材 / 剪辑 / 配音 / 合成四阶段进度实时轮询，成片落库后在播放页直接看。")],
+         contributors=["yuyue"], lead="yuyue",
+         links=[],
+         imgs=[("assets/works/w9-01.png", "今日简报：早晚报切换、头条大图、今日要点，以及按标签分区的条目（来源 / 标签 / AI 评分），分区可折叠"),
+               ("assets/works/w9-02.png", "专属简报：写下自己的兴趣（含「最近关注」活标签与快捷话题），点生成后进入进度蒙层"),
+               ("assets/works/w9-03.png", "视频：输入关键词生成新闻视频，历史视频带四阶段完成状态与时长，点开即播"),
+               ("assets/works/w9-04.png", "详情页：单条新闻的完整摘要，以及「AI 三方观点」卡片（技术 / 商业 / 社会视角 + 争议度条）")],
+         limits=["视频生成跑在本地（依赖 FFmpeg / Edge-TTS），还没上服务器，只在本地环境可用。",
+            "专属简报为保住 30–60 秒出稿，砍掉了三方辩论、翻译与二次打分，深度不如早晚报；也更吃关键词命中。",
+            "去重是「中文标题 Jaccard + LLM 判定同一事件」，不是向量召回，长尾重复仍会漏。",
+            "后端接口未做鉴权与限流，openid 由客户端直接传入，对外公开前需要补。"]),
 ]
 
 MEMBERS = [
@@ -271,7 +296,7 @@ ACTIVITIES = [
          tags=["组会", "进度汇报", "秋季学期"], em="📊", cv="cv1",
          summary="本学期第一次正式进度汇报，五个组轮流上台，每组 8 分钟，只讲三件事：做完了什么、卡在什么地方、下周打算做什么。",
          body=["周一晚 19:00，工科楼 A-302，本学期第一次全员进度汇报会。社长把规则定得很死：每组 8 分钟，不许念稿，代码和截图直接投屏，讲完当场演示。",
-               "AI 组最先交卷：RAG 检索链路已经能跑通“提问—召回—带出处回答”，卡点是召回回来的段落经常被截断；后端组把工具注册接口合并进了 OpenClaw 底座，但幂等兜底还没补测试；前端组的详情页骨架搭完了，正等着真实照片替换占位图；项目组把新手任务重出了一遍。",
+               "AI 组最先交卷：RAG 检索链路已经能跑通“提问—召回—带出处回答”，卡点是召回回来的段落经常被截断；后端组把工具注册接口合并进了 OpenClaw 底座，但幂等兜底还没补测试；前端组的详情页骨架搭完了，正等着真实照片到位；项目组把新手任务重出了一遍。",
                "汇报里被提到最多的一个词是“卡在哪”。社长要求每个卡点都必须写清“试过什么、为什么没成”，方便下一个接手的人不用从头踩一遍。散会前他在黑板上留下一句话：下周汇报，必须能当场跑起来，不接受只讲计划。"],
          photos=[("📊", "五组进度表 · A-302", "cv1"), ("🖥️", "当场演示环节", "cv2"), ("📌", "黑板上的下周待办", "cv3")],
          participants=["yangtianlong", "sunjiale", "chenmingrui", "yuyue", "caiquanyou", "zhengzixin", "zhuyuanmei", "caitong", "chenjiamin", "chenzhiming", "raoyuxuan", "hehongquan", "qinziyuan", "caikai", "dingbo", "zhanghongcheng", "guoshijun"]),
@@ -362,8 +387,8 @@ BENTO = [
 # 真实统计（2026-10-11）：成员/项目数直接取自上方 MEMBERS/WORKS，改数据自动同步；奖项与就业率暂无真实数据，不放假数
 STATS = [(str(len(MEMBERS)), "", "在册成员"), (str(len(WORKS)), "", "社团项目"), ("6", "", "培养方向"), ("2026", "", "秋季招新")]
 
-PROCESS = [("09.15 - 09.30", "线上报名", "扫码或通过页面底部 QQ 群提交报名表"),
-           ("10.01 - 10.10", "宣讲会 & 面谈", "聊聊你想做什么，而不是你考了多少分（占位）"),
+PROCESS = [("09.15 - 09.30", "线上报名", "按页面底部的联系方式提交报名表"),
+           ("10.01 - 10.10", "宣讲会 & 面谈", "聊聊你想做什么，而不是你考了多少分"),
            ("10.11 - 10.20", "新手任务", "一个小作业，看的是热情和潜力，不是现在的水平"),
            ("10.25", "公布名单", "欢迎仪式 & 首次组会，正式加入")]
 
@@ -518,7 +543,7 @@ def foot():
 </main>
 <footer>
   <div class="foot-in">
-    <span class="motto">// 象罔得之 —— 无心而求，反而得之</span>
+    <span class="motto">象罔得之 —— 无心而求，反而得之</span>
     <span class="foot-links">
       <a href="index.html">首页</a>
       <a href="projects.html">作品</a>
@@ -869,6 +894,13 @@ def build_work(x, prev, nxt):
     else:
         cover = '<div class="d-cover %s"></div>' % x["cv"]
         shots = ""
+    lims = x.get("limits")
+    _li = '<li style="font-size:14px;color:var(--dim);padding:7px 0 7px 18px;position:relative"><span style="position:absolute;left:0;color:var(--cy)">▸</span>%s</li>'
+    if lims:
+        lim_card = '<div class="card" style="margin-top:6px"><h4>已知局限</h4><ul>%s</ul></div>' % ''.join(_li % esc(t) for t in lims)
+    else:
+        lim_card = ('<div class="card" style="margin-top:6px"><h4>我们学到了什么</h4><ul>%s</ul></div>'
+                    % ''.join(_li % esc(t) for t in ["生产环境和本地跑通是两件事", "上线前一定要有监控和回滚方案", "文档写给自己看的，也写给下一届看的"]))
     return head(f'{x["title"]} · 象罔社团作品') + f"""
 <div class="wrap crumb"><a href="index.html">首页</a> / <a href="projects.html">作品</a> / {esc(x['title'])}</div>
 <section class="d-hero">
@@ -887,10 +919,7 @@ def build_work(x, prev, nxt):
     <div class="metrics rv">{metrics}</div>{shots}
     <h2>项目时间线</h2>
     <ol class="steps rv">{steps}</ol>
-    <div class="card" style="margin-top:6px">
-      <h4>我们学到了什么</h4>
-      <ul>{''.join(f'<li style="font-size:14px;color:var(--dim);padding:7px 0 7px 18px;position:relative"><span style="position:absolute;left:0;color:var(--cy)">▸</span>{esc(t)}</li>' for t in ["生产环境和本地跑通是两件事","上线前一定要有监控和回滚方案","文档写给自己看的，也写给下一届看的"])}</ul>
-    </div>
+    {lim_card}
     {pager(prev, nxt)}
   </div>
   <aside class="side">
@@ -1097,7 +1126,6 @@ def build_login():
   <div class="auth-wrap">
 
     <aside class="auth-brand">
-      <canvas id="net"></canvas>
       <span class="auth-mark">准入</span>
       <div class="ab-in">
         <a class="logo" href="index.html"><span class="seal">象</span><span class="logo-txt"><b>象罔社团</b><small>XIANGWANG CLUB</small></span></a>
@@ -1488,7 +1516,7 @@ def build_area():
       <table class="code-table" id="codeTable"></table>
     </div>
     <p style="margin-top:14px;font-size:13.5px;line-height:1.8;color:var(--dim-2)">
-      // 提醒：邀请码表和账号表都存在这台浏览器里，换台设备看到的不是同一份；正式版应由后端统一管理并校验。
+      提醒：邀请码表和账号表都存在这台浏览器里，换台设备看到的不是同一份；正式版应由后端统一管理并校验。
     </p>
   </div>
 </section>
