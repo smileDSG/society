@@ -407,6 +407,80 @@ bash /opt/xiangwang/deploy/autopull.sh -v
 
 ---
 
-## 十、许可
+## 十、掩盖部署（伪装站 + 隐秘入口）
+
+> 面向的场景：站点挂在公网 IP 上，扫描器和好奇的人会直接摸到 `/login.html`。
+> 目的不是"加固"，而是**让陌生人根本不觉得这里有东西值得动手**。
+
+### 做完之后长什么样
+
+| 访问路径 | 结果 |
+|---|---|
+| `http://<IP>:8085/` | 一个平平无奇的个人笔记站（`mask/`，伪造的） |
+| `http://<IP>:8085/login.html` | 还是那个笔记站，够不到真实站 |
+| `http://<IP>:8085/<密钥>/` | 真实社团站 |
+| `http://<IP>:8085/<密钥>/login.html` | 真实登录页 |
+
+「密钥」是一串 24 位随机十六进制，**只存在服务器上**（`/etc/xiangwang/mask-secret`），
+不在仓库里、不在日志里。所以即使有人看了这个公开仓库，也猜不到入口在哪。
+
+### 组成
+
+| 文件 | 作用 |
+|---|---|
+| `mask/` | 伪装站。刻意做得很朴素——零脚本、零外链、不出现「登录」「社团」字样 |
+| `deploy/container.conf` | 容器内 Nginx 配置：抹掉版本号、关目录列表、拦点文件、**猜错的路径一律返回伪装首页（200）** |
+| `deploy/publish.sh` | 组装对外目录 `/var/www/xw-pub`：`mask/` 铺根，`v3/` 铺进 `<密钥>/` |
+| `deploy/setup-mask.sh` | 服务器一键安装：生成密钥、组装、重建容器、五项自检 |
+
+`publish.sh` 必须是**原地增量同步**（rsync）——`/var/www/xw-pub` 是容器的 bind mount，
+整个目录换掉等于换了 inode，容器会继续指向旧目录，网站立刻 404。
+
+容器挂载由 `v3/` 改成组装出来的 `/var/www/xw-pub`：
+
+```bash
+docker run -d --name xiangwang-site --restart always \
+  -p 8085:80 \
+  -v /var/www/xw-pub:/usr/share/nginx/html:ro \
+  -v /opt/xiangwang/deploy/container.conf:/etc/nginx/conf.d/default.conf:ro \
+  nginx:alpine
+```
+
+### 部署
+
+```bash
+# 本地：提交推送（注意 mask/ 和 deploy/ 必须一起提交，服务器要靠它们组装）
+git add mask deploy && git commit -m "feat(mask): 伪装站 + 隐秘入口" && git push
+
+# 服务器：先更新代码，再一键安装
+cd /opt/xiangwang && bash deploy/autopull.sh -v
+bash /opt/xiangwang/deploy/setup-mask.sh
+```
+
+`setup-mask.sh` 会自检五项——根路径是不是伪装页、有没有漏出「象罔」、旧 `/login.html` 还能不能进真实站、
+响应头还泄不泄露 nginx 版本号、`.git` 有没有被挡住——全过才提示你可以把链接发出去。
+退回旧状态：`bash /etc/xiangwang/rollback.sh`。
+
+### 维护
+
+- 换密钥：`bash /opt/xiangwang/deploy/setup-mask.sh -r`（旧链接立即失效，要重新发给成员）
+- 忘了密钥：`cat /etc/xiangwang/entry-path.txt`
+- 以后推代码照旧。`autopull.sh` 末尾已接上 `publish.sh`，每 5 分钟自动拉取并重铺对外目录
+
+### ⚠️ 这层掩盖挡不住什么
+
+它挡的是**扫描器、爬虫、撞库脚本和好奇的人**。挡不住：
+
+1. **看过这个仓库的人。** 站点正文和 `v3/assets/auth.js` 里的邀请码表都在公开仓库里，
+   管理员码 `XW2026-ADMIN` / `XW2026-DEMO` 就在里面。拿到密钥链接 ≈ 拿到管理员码。
+2. **把链接转发出去的人。** 密钥链接一旦贴到公开群里，这层掩盖等于没有。
+3. **纯前端门禁本身。** 打开 F12 手写一条 `localStorage` 就能伪造管理员会话。
+
+结论不变：**别把学号、手机号、成绩、内部文档放上去。**
+真要拦住人，见第七节第 3 条——把校验搬到后端。
+
+---
+
+## 十一、许可
 
 社团内部项目，未开源授权，请勿外传。

@@ -96,4 +96,16 @@ fi
 # 把成功使用的镜像记成 origin，方便以后手工 git pull 也能用
 git remote set-url origin "$winner/$OWNER_REPO" 2>/dev/null || true
 
+# --- 重铺对外发布目录 ----------------------------------------------
+# 代码更新后必须重铺一次：mask/（伪装站）和 v3/（真实站）都可能变了。
+# 对外目录 /var/www/xw-pub 由 deploy/publish.sh 组装，
+# 布局：根 = 伪装站，/<密钥>/ = 真实站。
+# 这一步失败不影响代码同步本身，只记日志。
+if [ -f "$REPO_DIR/deploy/publish.sh" ]; then
+    if ! bash "$REPO_DIR/deploy/publish.sh"; then
+        echo "[$(date '+%F %T')] publish.sh 执行失败（代码已同步，但发布目录没重铺）" >> "$LOG_FILE"
+        echo "                      详见 /var/log/xiangwang-mask.log" >> "$LOG_FILE"
+    fi
+fi
+
 exit 0

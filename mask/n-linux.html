@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Linux 常用命令速查 · 笔记存档</title>
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
+<link rel="stylesheet" href="assets/mask.css">
+</head>
+<body>
+<div class="wrap">
+
+  <a class="back" href="index.html">← 返回目录</a>
+  <h2>Linux 常用命令速查</h2>
+  <p class="note">2026-09-06</p>
+
+  <p>平时老忘，抄一份放这儿。</p>
+
+  <h2>看进程和端口</h2>
+<pre>ps aux | grep nginx
+ss -lntp
+top -o %CPU</pre>
+
+  <h2>找文件和找内容</h2>
+<pre>find . -name "*.log" -mtime -7
+grep -rn "keyword" ./src
+du -sh * | sort -h</pre>
+
+  <h2>磁盘</h2>
+<pre>df -h
+du -sh /var/log/*
+ncdu /</pre>
+
+  <h2>一点注意</h2>
+  <p><code>rm -rf</code> 后面别跟变量，路径为空的时候会从根上开始删。我一般先 <code>echo</code> 一遍确认再回车。</p>
+
+  <footer class="site">
+    <p><a href="index.html">笔记存档</a></p>
+  </footer>
+
+</div>
+</body>
+</html>

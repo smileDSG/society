@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>矩阵求导的几个结论 · 笔记存档</title>
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
+<link rel="stylesheet" href="assets/mask.css">
+</head>
+<body>
+<div class="wrap">
+
+  <a class="back" href="index.html">← 返回目录</a>
+  <h2>矩阵求导的几个结论</h2>
+  <p class="note">2026-07-02</p>
+
+  <p>复习的时候顺手整理的，用的分母布局。</p>
+
+  <table>
+    <tr><th>式子</th><th>结果</th></tr>
+    <tr><td>∂(aᵀx)/∂x</td><td>a</td></tr>
+    <tr><td>∂(xᵀAx)/∂x</td><td>(A + Aᵀ)x</td></tr>
+    <tr><td>∂(Ax)/∂x</td><td>Aᵀ</td></tr>
+    <tr><td>∂‖x‖²/∂x</td><td>2x</td></tr>
+  </table>
+
+  <p>对称矩阵那一条可以直接写成 2Ax，写作业的时候省一步。</p>
+
+  <p>容易搞混的是布局约定：分子布局和分母布局差一个转置。换个教材对不上答案，先看一眼它用的是哪种。</p>
+
+  <footer class="site">
+    <p><a href="index.html">笔记存档</a></p>
+  </footer>
+
+</div>
+</body>
+</html>

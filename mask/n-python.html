@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Python 虚拟环境的一点记录 · 笔记存档</title>
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
+<link rel="stylesheet" href="assets/mask.css">
+</head>
+<body>
+<div class="wrap">
+
+  <a class="back" href="index.html">← 返回目录</a>
+  <h2>Python 虚拟环境的一点记录</h2>
+  <p class="note">2026-08-19</p>
+
+  <p>换机器之后重装了一遍，把坑记下来。</p>
+
+  <h2>建环境</h2>
+<pre>python -m venv .venv
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
+pip install -U pip</pre>
+
+  <h2>导出依赖</h2>
+<pre>pip freeze &gt; requirements.txt
+pip install -r requirements.txt</pre>
+
+  <h2>踩过的坑</h2>
+  <table>
+    <tr><th>现象</th><th>原因</th></tr>
+    <tr><td>装了半天，跑起来还是找不到包</td><td>没激活环境，装到了全局</td></tr>
+    <tr><td>在 VS Code 里选不到解释器</td><td>选到了系统的 python，重选 <code>.venv</code> 里的</td></tr>
+    <tr><td>requirements 里一堆本机路径</td><td>本地装的包被一起 freeze 进去了，换个干净的 venv 再导</td></tr>
+  </table>
+
+  <footer class="site">
+    <p><a href="index.html">笔记存档</a></p>
+  </footer>
+
+</div>
+</body>
+</html>

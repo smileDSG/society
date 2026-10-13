@@ -1,0 +1,97 @@
+/* 极简样式：刻意朴素，不用任何框架、不用 web font、不引外链 */
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #fbfbfa;
+  color: #2b2b2b;
+  font: 16px/1.75 -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+.wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 56px 24px 72px;
+}
+
+header.site { border-bottom: 1px solid #e3e3e0; padding-bottom: 22px; margin-bottom: 34px; }
+
+header.site h1 {
+  margin: 0 0 8px;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: .01em;
+}
+
+header.site h1 a { color: #2b2b2b; text-decoration: none; }
+header.site h1 a:hover { text-decoration: underline; }
+
+header.site p { margin: 0; color: #7a7a75; font-size: 14.5px; }
+
+a { color: #2f5d8a; }
+a:hover { color: #1d3f61; }
+
+h2 { font-size: 19px; margin: 34px 0 12px; font-weight: 600; }
+
+ul.list { list-style: none; margin: 0; padding: 0; }
+
+ul.list li {
+  display: flex;
+  gap: 16px;
+  align-items: baseline;
+  padding: 11px 0;
+  border-bottom: 1px solid #eeeeeb;
+}
+
+ul.list li:last-child { border-bottom: none; }
+
+ul.list time {
+  flex: 0 0 82px;
+  color: #96968f;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+p.note { color: #7a7a75; font-size: 14.5px; }
+
+pre {
+  background: #f2f2ef;
+  border: 1px solid #e6e6e2;
+  border-radius: 4px;
+  padding: 13px 15px;
+  overflow-x: auto;
+  font: 13.5px/1.7 ui-monospace, Consolas, "Courier New", monospace;
+  color: #38383a;
+}
+
+code {
+  background: #f2f2ef;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font: 13.5px/1.6 ui-monospace, Consolas, "Courier New", monospace;
+}
+
+table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #eeeeeb; }
+th { color: #5f5f5a; font-weight: 600; }
+
+footer.site {
+  margin-top: 52px;
+  padding-top: 20px;
+  border-top: 1px solid #e3e3e0;
+  color: #96968f;
+  font-size: 13.5px;
+}
+
+footer.site a { color: #96968f; }
+
+.back { display: inline-block; margin-bottom: 8px; font-size: 14px; }
+
+@media (max-width: 520px) {
+  .wrap { padding: 36px 18px 56px; }
+  ul.list li { display: block; }
+  ul.list time { display: block; flex: none; }
+}
