@@ -472,7 +472,22 @@ bash /opt/xiangwang/deploy/setup-mask.sh
 - 忘了密钥：`cat /etc/xiangwang/entry-path.txt`
 - 以后推代码照旧。`autopull.sh` 末尾已接上 `publish.sh`，每 5 分钟自动拉取并重铺对外目录
 
-### （可选）再加一个 Cloudflare HTTPS 入口
+### 端口不对外（推荐）
+
+默认情况下站点容器**只绑 `127.0.0.1:8085`**，不对公网开放：
+
+```bash
+# 新容器用 -p 127.0.0.1:8085:80，而不是 -p 8085:80
+docker inspect -f '{{json .HostConfig.PortBindings}}' xiangwang-site
+```
+
+效果：`47.99.180.48:8085` 从外网**连接被拒**，扫描器连"这里有个网站"都发现不了。
+公网唯一入口是 Cloudflare 隧道。**建议顺手把阿里云安全组里那条 8085 入方向规则删掉**（双保险，只留 22 给 SSH）。
+
+> ⚠️ 代价：隧道挂了 = 站点从外网消失，得 SSH 上服务器救。图省心可加 `--public` 恢复端口对外：
+> `bash deploy/setup-mask.sh --public`
+
+### （可选）Cloudflare HTTPS 入口
 
 站点原本只有 `http://IP:8085`。想多一个免域名、免备案的 HTTPS 地址，用 Cloudflare 快速隧道：
 

@@ -15,6 +15,14 @@
 #   bash /opt/xiangwang/deploy/setup-mask.sh -s k7m2p9qv  # 自己指定一个短密钥
 #   bash /opt/xiangwang/deploy/setup-mask.sh -h           # 看这段说明
 #
+# 关于端口：新容器**只绑 127.0.0.1**，不对公网开放那个端口。
+#   也就是说 47.99.180.48:8085 从外面是连不上的（连接被拒），
+#   扫描器连"这是个网站"都发现不了。
+#   公网唯一入口是 Cloudflare 隧道（deploy/setup-tunnel.sh）。
+#   ⚠️ 代价：隧道挂了 = 站点从外面消失，得 SSH 上服务器救。
+#      真要图省心、接受端口暴露，加 --public 恢复成对外监听。
+#   阿里云安全组里那条 8085 入方向规则，建议顺手删掉（双保险）。
+#
 # 密钥默认是一串 8 位随机字符，例如 k7m2p9qv。
 #   够短 —— 能在群里打字发、能口述；
 #   也够难猜 —— 从「不含 0/O/1/l/I」的 32 个字符里取，32^8 ≈ 1.1 万亿种组合，
@@ -46,12 +54,14 @@ DEFAULT_PORT="8085"
 ASSUME_YES=""
 REGEN=""
 CUSTOM=""
+PUBLIC=""
 while [ $# -gt 0 ]; do
     case "$1" in
         -y|--yes)        ASSUME_YES=1 ;;
         -r|--regenerate) REGEN=1 ;;
         -s|--secret)     CUSTOM="${2:-}"; shift ;;
-        -h|--help)       sed -n '2,34p' "$0"; exit 0 ;;
+        --public)        PUBLIC=1 ;;
+        -h|--help)       sed -n '2,40p' "$0"; exit 0 ;;
     esac
     shift
 done
@@ -87,6 +97,20 @@ ok "仓库目录就位"
 
 [ -f "$REPO_DIR/deploy/container.conf" ] || die "找不到 deploy/container.conf"
 [ -f "$REPO_DIR/deploy/publish.sh" ]     || die "找不到 deploy/publish.sh"
+
+# 端口只听 127.0.0.1，所以公网入口只能靠 Cloudflare 隧道。
+# 没搭隧道的话，装完这个站点除了本机谁也打不开 —— 必须提前讲清楚。
+if docker inspect xw-tunnel >/dev/null 2>&1; then
+    if [ "$(docker inspect -f '{{.State.Running}}' xw-tunnel 2>/dev/null)" = "true" ]; then
+        ok "Cloudflare 隧道在跑（公网唯一入口）"
+    else
+        warn "Cloudflare 隧道容器在，但没运行 —— 公网目前谁也进不来"
+        warn "  恢复：docker start xw-tunnel"
+    fi
+else
+    warn "还没搭 Cloudflare 隧道。端口只听 127.0.0.1，装完后只有本机能访问。"
+    warn "  搭公网入口：bash $REPO_DIR/deploy/setup-tunnel.sh"
+fi
 
 if grep -q 'publish.sh' "$REPO_DIR/deploy/autopull.sh" 2>/dev/null; then
     ok "自动部署已接入 publish.sh（每次拉代码后会自动重铺）"
@@ -180,31 +204,50 @@ step "4/7" "读取当前容器参数，留一份退回脚本"
 
 PORT="$DEFAULT_PORT"
 OLD_SRC="$REPO_DIR/v3"
+OLD_PUB="-p $PORT:80"          # 退回时恢复成"对外暴露端口"的旧写法
 
 if docker inspect "$CNAME" >/dev/null 2>&1; then
-    p="$(docker port "$CNAME" 80/tcp 2>/dev/null | head -1 | sed 's/.*://')"
+    full="$(docker port "$CNAME" 80/tcp 2>/dev/null | head -1)"   # 形如 0.0.0.0:8085 或 127.0.0.1:8085
+    p="${full##*:}"
     [ -n "$p" ] && PORT="$p"
 
     s="$(docker inspect -f '{{range .Mounts}}{{.Source}}{{"\n"}}{{end}}' "$CNAME" 2>/dev/null | head -1)"
     [ -n "$s" ] && OLD_SRC="$s"
 
-    say "  当前容器：端口 $PORT，挂载 $OLD_SRC"
+    # 记下它原来绑在哪个地址上，退回脚本照原样恢复
+    case "$full" in
+        127.0.0.1:*) OLD_PUB="-p 127.0.0.1:$PORT:80" ;;
+        *)           OLD_PUB="-p $PORT:80" ;;
+    esac
+
+    say "  当前容器：端口 $PORT，挂载 $OLD_SRC，绑定 ${full%:*}"
 else
     warn "没有找到名为 $CNAME 的容器，将按默认端口 $PORT 新建"
+fi
+
+# 决定新容器绑在哪：
+#   默认只绑 127.0.0.1 —— 公网摸不到这个端口，唯一入口是 Cloudflare 隧道。
+#   加 --public 才会对外暴露（一般不需要，也不建议）。
+if [ -n "$PUBLIC" ]; then
+    NEW_PUB="-p $PORT:80"
+    say "  监听地址：0.0.0.0:$PORT（对外暴露，--public 指定的）"
+else
+    NEW_PUB="-p 127.0.0.1:$PORT:80"
+    say "  监听地址：127.0.0.1:$PORT（只给本机和隧道用，公网摸不到）"
 fi
 
 umask 077
 cat > "$CONF_DIR/rollback.sh" <<EOF
 #!/usr/bin/env bash
-# 退回「掩盖」之前的状态：站点内容直接挂在根目录。
+# 退回「掩盖」之前的状态：站点内容直接挂在根目录、端口对外暴露。
 # 由 setup-mask.sh 自动生成于 $(date '+%F %T')
 set -u
 docker rm -f $CNAME 2>/dev/null || true
 docker run -d --name $CNAME --restart always \\
-  -p $PORT:80 \\
+  $OLD_PUB \\
   -v $OLD_SRC:/usr/share/nginx/html:ro \\
   $IMG
-echo "已退回旧状态（根目录直接是真实站）：http://<IP>:$PORT/"
+echo "已退回旧状态（根目录直接是真实站，端口对外）：http://<IP>:$PORT/"
 EOF
 chmod 700 "$CONF_DIR/rollback.sh"
 umask 022
@@ -225,7 +268,7 @@ fi
 docker rm -f "$CNAME" >/dev/null 2>&1 || true
 
 docker run -d --name "$CNAME" --restart always \
-    -p "$PORT:80" \
+    $NEW_PUB \
     -v "$PUB_DIR:/usr/share/nginx/html:ro" \
     -v "$REPO_DIR/deploy/container.conf:/etc/nginx/conf.d/default.conf:ro" \
     "$IMG" >/dev/null || die "容器起不来，用 bash $CONF_DIR/rollback.sh 退回"
@@ -276,21 +319,35 @@ step "7/7" "记住这个地址"
 IP="$(curl -s --max-time 5 https://api.ipify.org 2>/dev/null || true)"
 [ -n "$IP" ] || IP="47.99.180.48"
 
+# 公网入口优先用隧道域名；没搭隧道就明说端口不对外
+TUNNEL_URL=""
+if docker inspect xw-tunnel >/dev/null 2>&1; then
+    TUNNEL_URL="$(docker logs xw-tunnel 2>&1 | grep -oE 'https://[a-z0-9-]*\.trycloudflare\.com' | tail -1)"
+fi
+
 say ""
 say "  =============================================="
-say "   对外（给陌生人看的）：  http://$IP:$PORT/"
-say ""
-say "   真实站入口（只发给社团成员）："
-say "       http://$IP:$PORT/$SECRET/"
-say "       http://$IP:$PORT/$SECRET/login.html"
+if [ -n "$TUNNEL_URL" ]; then
+    say "   对外（给陌生人看的）：  $TUNNEL_URL/"
+    say ""
+    say "   真实站入口（只发给社团成员）："
+    say "       $TUNNEL_URL/$SECRET/"
+    say "       $TUNNEL_URL/$SECRET/login.html"
+else
+    say "   ⚠️ 还没搭 Cloudflare 隧道，公网现在打不开这个站。"
+    say "      搭好：bash $REPO_DIR/deploy/setup-tunnel.sh"
+    say "      （端口只听 127.0.0.1，http://$IP:$PORT/ 从外网连不上）"
+fi
 say "  =============================================="
 say ""
-say "  三件事别忘："
+say "  四件事别忘："
 say "   1. 把新入口发到社团群里。原来流传的"
 say "      http://$IP:$PORT/login.html 从现在起打不开真实站了。"
 say "   2. 别再在任何公开地方贴新入口 —— 贴出来就等于没有。"
-say "   3. 密钥在 $SECRET_FILE。换一把："
-say "      bash $0 -r"
+say "   3. 密钥在 $SECRET_FILE。换一把：bash $0 -r"
+say "   4. 端口只听 127.0.0.1，公网入口只有隧道一条。"
+say "      隧道挂了站点就从外网消失 —— 阿里云安全组里 8085 那条"
+say "      入方向规则建议顺手删掉（双保险），要恢复先跑 $0 --public。"
 say ""
 say "  以后推代码：照旧推 GitHub 就行，服务器每 5 分钟自动拉取并重铺，"
 say "  伪装站和真实站都会跟着更新，你什么都不用做。"
