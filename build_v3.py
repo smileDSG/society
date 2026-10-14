@@ -54,7 +54,7 @@ WORKS = [
          timeline=[("2026.07", "立项", "确定对话驱动的科研智能体方向，把碎掉的工具链收进一个界面。"),
                    ("2026.09", "全链路跑通", "从零到 PDF 真机验收，连续自主运行 10+ 轮、直接产出可编译 PDF。"),
                    ("2026.10", "多源检索 + 审核", "文献多源检索入库，出稿前过 11 维度期刊级审核。")],
-         contributors=["yangtianlong", "raoyuxuan", "qinziyuan", "sunjiale", "caikai"], lead="raoyuxuan",
+         contributors=["yangtianlong", "raoyuxuan", "qinziyuan", "sunjiale", "caikai"], lead="yangtianlong",
          links=[("流程指南", "#")],
          imgs=[("assets/works/w6-01.png", "项目总览：39 个科研项目、运行中状态、最近实验一屏可见"),
                ("assets/works/w6-02.png", "对话页：智能体自主执行一个「目标轮」，带思考过程与工具调用，右侧是实时产物树"),
@@ -150,7 +150,7 @@ MEMBERS = [
          quote="学 Agent 最好的方法就是细致钻研",
          bio="Agent 开发，负责社团科研智能体上下文工程、记忆和提示词工程部分以及论文撰写调试。",
          skills=["Java", "Python", "FastAPI", "Spring", "LangChain", "LangGraph", "Milvus", "Qdrant", "pgvector", "MySQL", "Redis", "Docker"],
-         exp=[("科研智能体 · 组长", "负责上下文设计、记忆与提示词工程；上下文分六大区编排，成本降低约 30%，缓存命中率提升至约 90%。"), ("论文撰写与调试", "参与相关论文的撰写与实验调试。")],
+         exp=[("科研智能体 · 上下文工程", "负责上下文设计、记忆与提示词工程；上下文分六大区编排，成本降低约 30%，缓存命中率提升至约 90%。"), ("论文撰写与调试", "参与相关论文的撰写与实验调试。")],
          works=["w6"], joined="2026 年 5 月",
          qa=[("为什么加入", "学习团队开发契约，多学多干，积累经验。"), ("给新人的建议", "欢迎加入象罔社，这是一个相亲相爱的大家庭。")]),
     dict(id="qinziyuan", name="秦梓源", post="技术四组组长", tier="技术部", college="人工智能学院", major="人工智能", hue=2,
@@ -839,7 +839,7 @@ def build_work(x, prev, nxt):
     others = [y for y in WORKS if y["id"] != x["id"]][:3]
     rel = "".join(f"""
       <a class="beam tilt" href="{work_url(y['id'])}"><div class="beam-in wk spot">
-        <div class="cover {y['cv']}" style="height:96px"></div>
+        <div class="cover {y['cv']}" style="height:96px">{'<img class="cov-img" src="%s" alt="" loading="lazy">' % y['imgs'][0][0] if y.get('imgs') else ''}</div>
         <div class="body" style="padding:15px 18px 18px"><span class="cat">{esc(y['cat'])}</span><h3 style="font-size:16px">{esc(y['title'])}</h3></div>
       </div></a>""" for y in others)
     meta = "".join(f"<span>{esc(s)}</span>" for s in [x["cat"], x["status"]] + x["stack"])
