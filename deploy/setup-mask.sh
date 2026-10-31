@@ -50,6 +50,9 @@ SECRET_FILE="$CONF_DIR/mask-secret"
 CNAME="xiangwang-site"
 IMG="nginx:alpine"
 DEFAULT_PORT="8085"
+TLS_DIR="$CONF_DIR/tls"
+ACME_DIR="/var/www/acme"
+DEPLOY_DIR="$REPO_DIR/deploy"
 
 ASSUME_YES=""
 REGEN=""
@@ -98,6 +101,10 @@ ok "仓库目录就位"
 [ -f "$REPO_DIR/deploy/container.conf" ] || die "找不到 deploy/container.conf"
 [ -f "$REPO_DIR/deploy/publish.sh" ]     || die "找不到 deploy/publish.sh"
 
+# 直连模式（setup-direct.sh 跑过）：公网走 80/443，不再依赖 Cloudflare 隧道
+if [ -f "$CONF_DIR/direct-mode" ] && [ -f "$TLS_DIR/fullchain.pem" ]; then
+    ok "直连模式已启用（公网走 80/443，无需 Cloudflare 隧道）"
+else
 # 端口只听 127.0.0.1，所以公网入口只能靠 Cloudflare 隧道。
 # 没搭隧道的话，装完这个站点除了本机谁也打不开 —— 必须提前讲清楚。
 if docker inspect xw-tunnel >/dev/null 2>&1; then
@@ -110,6 +117,7 @@ if docker inspect xw-tunnel >/dev/null 2>&1; then
 else
     warn "还没搭 Cloudflare 隧道。端口只听 127.0.0.1，装完后只有本机能访问。"
     warn "  搭公网入口：bash $REPO_DIR/deploy/setup-tunnel.sh"
+fi
 fi
 
 if grep -q 'publish.sh' "$REPO_DIR/deploy/autopull.sh" 2>/dev/null; then
@@ -236,6 +244,16 @@ else
     say "  监听地址：127.0.0.1:$PORT（只给本机和隧道用，公网摸不到）"
 fi
 
+# 直连模式：覆盖上面的绑定，改用 TLS 配置 + 公网 80/443（不再暴露 8085，避免隧道回源死循环）
+CONF_MOUNT="$REPO_DIR/deploy/container.conf:/etc/nginx/conf.d/default.conf:ro"
+CERT_MOUNT=""
+if [ -f "$CONF_DIR/direct-mode" ] && [ -f "$TLS_DIR/fullchain.pem" ]; then
+    NEW_PUB="-p 0.0.0.0:80:80 -p 0.0.0.0:443:443"
+    CONF_MOUNT="$DEPLOY_DIR/container-tls.conf:/etc/nginx/conf.d/default.conf:ro"
+    CERT_MOUNT="-v $TLS_DIR:/etc/nginx/tls:ro -v $ACME_DIR:/var/www/acme:ro"
+    say "  直连模式：公网 80/443（TLS），证书 $TLS_DIR"
+fi
+
 umask 077
 cat > "$CONF_DIR/rollback.sh" <<EOF
 #!/usr/bin/env bash
@@ -270,7 +288,8 @@ docker rm -f "$CNAME" >/dev/null 2>&1 || true
 docker run -d --name "$CNAME" --restart always \
     $NEW_PUB \
     -v "$PUB_DIR:/usr/share/nginx/html:ro" \
-    -v "$REPO_DIR/deploy/container.conf:/etc/nginx/conf.d/default.conf:ro" \
+    -v "$CONF_MOUNT" \
+    $CERT_MOUNT \
     "$IMG" >/dev/null || die "容器起不来，用 bash $CONF_DIR/rollback.sh 退回"
 
 # 等它监听上
@@ -319,24 +338,37 @@ step "7/7" "记住这个地址"
 IP="$(curl -s --max-time 5 https://api.ipify.org 2>/dev/null || true)"
 [ -n "$IP" ] || IP="47.99.180.48"
 
-# 公网入口优先用隧道域名；没搭隧道就明说端口不对外
-TUNNEL_URL=""
-if docker inspect xw-tunnel >/dev/null 2>&1; then
-    TUNNEL_URL="$(docker logs xw-tunnel 2>&1 | grep -oE 'https://[a-z0-9-]*\.trycloudflare\.com' | tail -1)"
-fi
-
 say ""
 say "  =============================================="
-if [ -n "$TUNNEL_URL" ]; then
-    say "   对外（给陌生人看的）：  $TUNNEL_URL/"
+# 直连模式优先：直接给出 HTTPS 入口（自动识别自签 IP / Let's Encrypt 域名）
+if [ -f "$CONF_DIR/direct-mode" ] && [ -f "$TLS_DIR/fullchain.pem" ]; then
+    DIRECT_HOST="$IP"
+    if [ -d "$TLS_DIR/live" ]; then
+        d="$(ls "$TLS_DIR/live" 2>/dev/null | head -1)"
+        [ -n "$d" ] && DIRECT_HOST="$d"
+    fi
+    say "   直连模式 · 对外（给陌生人看的）：  https://$DIRECT_HOST/"
     say ""
     say "   真实站入口（只发给社团成员）："
-    say "       $TUNNEL_URL/$SECRET/"
-    say "       $TUNNEL_URL/$SECRET/login.html"
+    say "       https://$DIRECT_HOST/$SECRET/"
+    say "       https://$DIRECT_HOST/$SECRET/login.html"
 else
-    say "   ⚠️ 还没搭 Cloudflare 隧道，公网现在打不开这个站。"
-    say "      搭好：bash $REPO_DIR/deploy/setup-tunnel.sh"
-    say "      （端口只听 127.0.0.1，http://$IP:$PORT/ 从外网连不上）"
+    # 否则按隧道模式提示
+    TUNNEL_URL=""
+    if docker inspect xw-tunnel >/dev/null 2>&1; then
+        TUNNEL_URL="$(docker logs xw-tunnel 2>&1 | grep -oE 'https://[a-z0-9-]*\.trycloudflare\.com' | tail -1)"
+    fi
+    if [ -n "$TUNNEL_URL" ]; then
+        say "   对外（给陌生人看的）：  $TUNNEL_URL/"
+        say ""
+        say "   真实站入口（只发给社团成员）："
+        say "       $TUNNEL_URL/$SECRET/"
+        say "       $TUNNEL_URL/$SECRET/login.html"
+    else
+        say "   ⚠️ 还没搭 Cloudflare 隧道，公网现在打不开这个站。"
+        say "      搭好：bash $REPO_DIR/deploy/setup-tunnel.sh"
+        say "      （端口只听 127.0.0.1，http://$IP:$PORT/ 从外网连不上）"
+    fi
 fi
 say "  =============================================="
 say ""
@@ -345,9 +377,14 @@ say "   1. 把新入口发到社团群里。原来流传的"
 say "      http://$IP:$PORT/login.html 从现在起打不开真实站了。"
 say "   2. 别再在任何公开地方贴新入口 —— 贴出来就等于没有。"
 say "   3. 密钥在 $SECRET_FILE。换一把：bash $0 -r"
-say "   4. 端口只听 127.0.0.1，公网入口只有隧道一条。"
-say "      隧道挂了站点就从外网消失 —— 阿里云安全组里 8085 那条"
-say "      入方向规则建议顺手删掉（双保险），要恢复先跑 $0 --public。"
+if [ -f "$CONF_DIR/direct-mode" ] && [ -f "$TLS_DIR/fullchain.pem" ]; then
+    say "   4. 直连模式已对外开 80/443，确认阿里云安全组放行了 TCP 80 和 443。"
+    say "      8085 那条入方向规则建议删掉（双保险）。"
+else
+    say "   4. 端口只听 127.0.0.1，公网入口只有隧道一条。"
+    say "      隧道挂了站点就从外网消失 —— 阿里云安全组里 8085 那条"
+    say "      入方向规则建议顺手删掉（双保险），要恢复先跑 $0 --public。"
+fi
 say ""
 say "  以后推代码：照旧推 GitHub 就行，服务器每 5 分钟自动拉取并重铺，"
 say "  伪装站和真实站都会跟着更新，你什么都不用做。"
