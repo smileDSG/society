@@ -248,7 +248,7 @@ fi
 CONF_MOUNT="$REPO_DIR/deploy/container.conf:/etc/nginx/conf.d/default.conf:ro"
 CERT_MOUNT=""
 if [ -f "$CONF_DIR/direct-mode" ] && [ -f "$TLS_DIR/fullchain.pem" ]; then
-    NEW_PUB="-p 0.0.0.0:80:80 -p 0.0.0.0:443:443"
+    NEW_PUB="-p 0.0.0.0:80:80 -p 0.0.0.0:443:443 -p 127.0.0.1:8085:8085"
     CONF_MOUNT="$DEPLOY_DIR/container-tls.conf:/etc/nginx/conf.d/default.conf:ro"
     CERT_MOUNT="-v $TLS_DIR:/etc/nginx/tls:ro -v $ACME_DIR:/var/www/acme:ro"
     say "  直连模式：公网 80/443（TLS），证书 $TLS_DIR"

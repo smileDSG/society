@@ -144,6 +144,7 @@ fi
 docker run -d --name "$CNAME" --restart always \
     -p 0.0.0.0:80:80 \
     -p 0.0.0.0:443:443 \
+    -p 127.0.0.1:8085:8085 \
     -v "$PUB_DIR:/usr/share/nginx/html:ro" \
     -v "$DEPLOY_DIR/container-tls.conf:/etc/nginx/conf.d/default.conf:ro" \
     -v "$TLS_DIR:/etc/nginx/tls:ro" \
