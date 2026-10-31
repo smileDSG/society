@@ -150,13 +150,13 @@ docker run -d --name "$CNAME" --restart always \
     -v "$ACME_DIR:/var/www/acme:ro" \
     "$IMG" >/dev/null || die "容器起不来，检查：docker logs $CNAME --tail 50"
 
-# 等监听
+# 等监听（直连模式只暴露 80/443，探本机 443；-k 忽略自签证书）
 up=""
 for _ in $(seq 1 20); do
-    if curl -s -o /dev/null --max-time 2 "http://127.0.0.1:8085/" 2>/dev/null; then up=1; break; fi
+    if curl -sk -o /dev/null --max-time 2 "https://127.0.0.1/" 2>/dev/null; then up=1; break; fi
     sleep 0.5
 done
-[ -n "$up" ] || die "容器起来了但 8085 不通，看日志：docker logs $CNAME --tail 50"
+[ -n "$up" ] || die "容器起来了但 443 不通，看日志：docker logs $CNAME --tail 50"
 
 docker exec "$CNAME" nginx -t >/dev/null 2>&1 || die "nginx 配置语法有错：docker exec $CNAME nginx -t"
 ok "容器运行中，nginx 配置校验通过"
@@ -166,17 +166,15 @@ step "5/6" "验收"
 passed=0; failed=0
 chk() { if [ "$2" = "1" ]; then ok "$1"; passed=$((passed+1)); else warn "不通过：$1"; failed=$((failed+1)); fi; }
 
-# HTTPS 根路径
-https_root_code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 15 "https://$DOMAIN/" 2>/dev/null)"
-# 自签证书 curl 会报 cert 错，用 -k 再探一次拿到状态码
-[ "$https_root_code" = "200" ] || https_root_code="$(curl -sk -o /dev/null -w '%{http_code}' --max-time 15 "https://$DOMAIN/" 2>/dev/null)"
+# 验收走本机回环（127.0.0.1），不依赖阿里云安全组是否已开 80/443
+https_root_code="$(curl -sk -o /dev/null -w '%{http_code}' --max-time 15 "https://127.0.0.1/" 2>/dev/null)"
 [ "$https_root_code" = "200" ] && chk "HTTPS 根路径可访问（200）" 1 || chk "HTTPS 根路径可访问（当前 ${https_root_code:-空}）" 0
 
-root_html="$(curl -sk --max-time 15 "https://$DOMAIN/" 2>/dev/null)"
+root_html="$(curl -sk --max-time 15 "https://127.0.0.1/" 2>/dev/null)"
 case "$root_html" in *笔记存档*) chk "根路径 = 伪装页" 1 ;; *) chk "根路径 = 伪装页" 0 ;; esac
 case "$root_html" in *象罔*)      chk "根路径不含「象罔」字样" 0 ;; *) chk "根路径不含「象罔」字样" 1 ;; esac
 
-real_html="$(curl -sk --max-time 15 "https://$DOMAIN/$SECRET/login.html" 2>/dev/null)"
+real_html="$(curl -sk --max-time 15 "https://127.0.0.1/$SECRET/login.html" 2>/dev/null)"
 case "$real_html" in *象罔*) chk "密钥路径能打开真实站" 1 ;; *) chk "密钥路径能打开真实站" 0 ;; esac
 
 say "     通过 $passed 项，失败 $failed 项"
